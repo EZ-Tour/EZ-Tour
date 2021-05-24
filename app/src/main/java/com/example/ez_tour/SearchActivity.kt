@@ -1,15 +1,11 @@
 package com.example.ez_tour
 
 import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.database.*
-import kotlinx.android.synthetic.main.activity_search.*
-import java.net.URL
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 
 class SearchActivity : AppCompatActivity() {
@@ -26,7 +22,7 @@ class SearchActivity : AppCompatActivity() {
        // val mRecyclerView = findViewById<RecyclerView>(R.id.review)
 
 
-        databaseReference.child("카페").addValueEventListener(object :ValueEventListener {
+      /*  databaseReference.child("카페").addValueEventListener(object :ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if(dataSnapshot != null) {
                     dataSnapshot.children.forEach { i ->
@@ -54,7 +50,7 @@ class SearchActivity : AppCompatActivity() {
             }
         })
 
-        Log.d("Listtest", list.toString())
+        Log.d("Listtest", list.toString()) */
 
 
 

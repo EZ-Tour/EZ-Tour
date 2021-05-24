@@ -28,9 +28,9 @@ class MapActivity : AppCompatActivity(), MapView.POIItemEventListener {
     var REQUIRED_PERMISSIONS = arrayOf<String>(Manifest.permission.ACCESS_FINE_LOCATION)
     private val firebaseDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
     private val databaseReference: DatabaseReference = firebaseDatabase.getReference()
-    val NameData = Array<String>(1000,{})
+    /*val NameData = Array<String>(1000,{})
     val LongitudeData = emptyArray<Double>()
-    val LatitudeData = emptyArray<Double>()
+    val LatitudeData = emptyArray<Double>()*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -136,16 +136,16 @@ class MapActivity : AppCompatActivity(), MapView.POIItemEventListener {
                 if(dataSnapshot != null) {
                     dataSnapshot.children.forEach { i ->
                         Log.d("MainActivity", "Single ValueEventListener : " + i.child("이름").getValue())
-                        NameData[n] = "${i.child("이름").getValue()}"
+                      /*  NameData[n] = "${i.child("이름").getValue()}"
                         LongitudeData[n] = i.child("좌표").child("경도").getValue() as Double
-                        LatitudeData[n] = i.child("좌표").child("위도").getValue() as Double
+                        LatitudeData[n] = i.child("좌표").child("위도").getValue() as Double */
                         n++
 
                     }
                 } else {
                     Toast.makeText(getApplicationContext(), "Datasnapshot is null", Toast.LENGTH_SHORT).show()
                 }
-                for(i in 0..n){
+                /*for(i in 0..n){
                     var marker = MapPOIItem()
                     marker.mapPoint= MapPoint.mapPointWithGeoCoord(LongitudeData[n], LatitudeData[n])
                     marker.itemName= NameData[n]
@@ -153,7 +153,7 @@ class MapActivity : AppCompatActivity(), MapView.POIItemEventListener {
                     marker.markerType = MapPOIItem.MarkerType.BluePin
                     marker.selectedMarkerType = MapPOIItem.MarkerType.RedPin
                     mapView.addPOIItem(marker)
-                }
+                } */
 
             }
 

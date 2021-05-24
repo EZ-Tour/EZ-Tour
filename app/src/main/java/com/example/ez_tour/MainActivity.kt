@@ -15,9 +15,6 @@ import com.kakao.sdk.auth.LoginClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.AuthErrorCause.*
 import com.kakao.sdk.user.UserApiClient
-import com.opencsv.CSVReader
-import java.io.FileReader
-import java.io.IOException
 import java.security.MessageDigest
 
 class MainActivity : AppCompatActivity() {
@@ -25,9 +22,55 @@ class MainActivity : AppCompatActivity() {
     private val firebaseDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
     private val databaseReference: DatabaseReference = firebaseDatabase.getReference()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+       /* var file = InputStreamReader(getResources().openRawResource(R.raw.test1))
+        var fileReader: BufferedReader? = null
+        var csvReader: CSVReader? = null
+        val dataList = arrayListOf<Array<String>>()
+        var n:Int = 0
+        fileReader = BufferedReader(file)
+        csvReader = CSVReader(fileReader)
+        //파싱용 코드 배포용에서 제거 할것
+        try {
+
+
+            csvReader.use {
+                for (data in it) {
+
+                    dataList.add(data)
+
+                }
+            }
+        } catch (e: IOException) {
+            if(BuildConfig.DEBUG) {
+                e.printStackTrace()
+            }
+        }
+        for(data in dataList) {
+            Log.d("jhdroid_test", "data : ${Arrays.deepToString(data)}")
+            databaseReference.child("${Arrays.deepToString(arrayOf(data[0])).replace("[","").replace("]","")}")
+                .child("${Arrays.deepToString(arrayOf(data[1])).replace("[","").replace("]","")}")
+                .child("이름").setValue("${Arrays.deepToString(arrayOf(data[1])).replace("[","").replace("]","")}","이름")
+            databaseReference.child("${Arrays.deepToString(arrayOf(data[0])).replace("[","").replace("]","")}")
+                .child("${Arrays.deepToString(arrayOf(data[1])).replace("[","").replace("]","")}")
+                .child("급속충전타입구분").setValue("${Arrays.deepToString(arrayOf(data[2])).replace("[","").replace("]","")}","급속충전타입구분")
+            databaseReference.child("${Arrays.deepToString(arrayOf(data[0])).replace("[","").replace("]","")}")
+                .child("${Arrays.deepToString(arrayOf(data[1])).replace("[","").replace("]","")}")
+                .child("주소").setValue("${Arrays.deepToString(arrayOf(data[3])).replace("[","").replace("]","")}","주소")
+            databaseReference.child("${Arrays.deepToString(arrayOf(data[0])).replace("[","").replace("]","")}")
+                .child("${Arrays.deepToString(arrayOf(data[1])).replace("[","").replace("]","")}").child("좌표")
+                .child("위도").setValue("${Arrays.deepToString(arrayOf(data[4])).replace("[","").replace("]","")}","위도")
+            databaseReference.child("${Arrays.deepToString(arrayOf(data[0])).replace("[","").replace("]","")}")
+                .child("${Arrays.deepToString(arrayOf(data[1])).replace("[","").replace("]","")}").child("좌표")
+                .child("경도").setValue("${Arrays.deepToString(arrayOf(data[5])).replace("[","").replace("]","")}","경도")
+        }
+
+        */
+
 
         try {
             val info =
@@ -106,29 +149,6 @@ class MainActivity : AppCompatActivity() {
                     //  "\n프로필사진: ${user.kakaoAccount?.profile?.thumbnailImageUrl}"
                 }
             }
-        }
-    }
-}
-
-class CsvHelper(private val filePath: String) {
-    fun readCsvData(fileName: String) : List<Array<String>> {
-        return try {
-            FileReader("$filePath/$fileName").use { fr ->
-                val dataList = arrayListOf<Array<String>>()
-
-                //for문을 이용해 데이터 읽기
-                CSVReader(fr).use {
-                    for (data in it) {
-                        dataList.add(data)
-                    }
-                }
-                dataList
-            }
-        } catch (e: IOException) {
-            if (BuildConfig.DEBUG) {
-                e.printStackTrace()
-            }
-            listOf()
         }
     }
 }
