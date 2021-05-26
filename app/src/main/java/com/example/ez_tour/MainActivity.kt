@@ -67,9 +67,12 @@ class MainActivity : AppCompatActivity() {
             databaseReference.child("${Arrays.deepToString(arrayOf(data[0])).replace("[","").replace("]","")}")
                 .child("${Arrays.deepToString(arrayOf(data[1])).replace("[","").replace("]","")}").child("좌표")
                 .child("경도").setValue("${Arrays.deepToString(arrayOf(data[5])).replace("[","").replace("]","")}","경도")
-        }
+            databaseReference.child("${Arrays.deepToString(arrayOf(data[0])).replace("[","").replace("]","")}")
+                .child("${Arrays.deepToString(arrayOf(data[1])).replace("[","").replace("]","")}")
+                .child("태그").setValue("${Arrays.deepToString(arrayOf(data[0])).replace("[","").replace("]","")}","태그")
+        }   */
 
-        */
+
 
 
         try {

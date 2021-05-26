@@ -33,13 +33,16 @@ class RecyclerAdapter(private val items: ArrayList<RecycleData>) :
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         private var view: View = v
         fun bind(listener: View.OnClickListener, item: RecycleData) {
-            view.view_reimage.setImageBitmap(item.imageURL)
-            when(item.imageTag){
+            //view.view_reimage.setImageBitmap(item.imageURL)
+            when(item.imageTag) {
                 "카페" -> view.view_retag.setImageResource(R.drawable.kakao_login_large_narrow)
                 "숙소" -> view.view_retag.setImageResource(R.drawable.kakao_login_large_narrow)
+                "관광명소" -> view.view_retag.setImageResource(R.drawable.kakao_login_large_narrow)
+                "음식점" -> view.view_retag.setImageResource(R.drawable.kakao_login_large_narrow)
             }
             view.text_rename.text = item.strName
             view.setOnClickListener(listener)
         }
+
     }
     }
