@@ -39,7 +39,6 @@ class MapActivity : AppCompatActivity(), MapView.POIItemEventListener {
     private val databaseReference: DatabaseReference = firebaseDatabase.getReference()
     var uLatitude:Double = 0.0
     var uLongitude:Double = 0.0
-    lateinit var uNowPosition:MapPoint
     private val Q = 6372.8 * 1000
     var n:Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,8 +65,7 @@ class MapActivity : AppCompatActivity(), MapView.POIItemEventListener {
                     lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)!!
                 uLatitude = userNowLocation.latitude
                 uLongitude = userNowLocation.longitude
-                uNowPosition = MapPoint.mapPointWithGeoCoord(uLatitude, uLongitude)
-
+                mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(uLatitude, uLongitude), true)
 
             } catch (e: NullPointerException) {
                 Log.e("LOCATION_ERROR", e.toString())
@@ -90,7 +88,6 @@ class MapActivity : AppCompatActivity(), MapView.POIItemEventListener {
                 PERMISSIONS_REQUEST_CODE
             )
         }
-        mapView.setMapCenterPoint(uNowPosition, true)
 
         //Help 이미지 초기화
         val img_hlep = findViewById<View>(R.id.img_hlep) as ImageView
@@ -130,7 +127,38 @@ class MapActivity : AppCompatActivity(), MapView.POIItemEventListener {
         }
         // GPS 버튼 클릭리스너  (현재위치 가져오기)
         btn_gps.setOnClickListener {
-            mapView.setMapCenterPoint(uNowPosition, true)
+            if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+                val lm: LocationManager =
+                    getSystemService(Context.LOCATION_SERVICE) as LocationManager
+                try {
+                    val userNowLocation: Location =
+                        lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)!!
+                    uLatitude = userNowLocation.latitude
+                    uLongitude = userNowLocation.longitude
+
+
+                } catch (e: NullPointerException) {
+                    Log.e("LOCATION_ERROR", e.toString())
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        ActivityCompat.finishAffinity(this)
+                    } else {
+                        ActivityCompat.finishAffinity(this)
+                    }
+
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    System.exit(0)
+                }
+
+            } else {
+                Toast.makeText(this, "위치 권한이 없습니다.", Toast.LENGTH_SHORT).show()
+                ActivityCompat.requestPermissions(
+                    this,
+                    REQUIRED_PERMISSIONS,
+                    PERMISSIONS_REQUEST_CODE
+                )
+            }
+            mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(uLatitude, uLongitude), true)
             gpsmarker.mapPoint = MapPoint.mapPointWithGeoCoord(uLatitude, uLongitude)
             gpsmarker.itemName= "현재위치"
             gpsmarker.tag = 0
@@ -143,7 +171,6 @@ class MapActivity : AppCompatActivity(), MapView.POIItemEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if(dataSnapshot != null) {
                     dataSnapshot.children.forEach { i ->
-                        Log.d("MainActivity", "Single Value: " + i.child("이름").getValue())
                         NameData.add("${i.child("이름").getValue()}")
                         AddressData.add("${i.child("주소").getValue()}")
                         LongitudeData.add("${i.child("좌표").child("경도").getValue()}".toDouble())
@@ -169,9 +196,6 @@ class MapActivity : AppCompatActivity(), MapView.POIItemEventListener {
             }
 
 
-
-
-
         })
 
 
@@ -184,8 +208,6 @@ class MapActivity : AppCompatActivity(), MapView.POIItemEventListener {
         override fun getCalloutBalloon(poiItem: MapPOIItem?): View {
             name.text= NameData[poiItem!!.tag]
             address.text = AddressData[poiItem!!.tag]
-
-
 
             return mCalloutBalloon
         }

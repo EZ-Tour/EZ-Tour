@@ -1,10 +1,7 @@
 package com.example.ez_tour
 
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Base64
-import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
@@ -15,7 +12,6 @@ import com.kakao.sdk.auth.LoginClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.AuthErrorCause.*
 import com.kakao.sdk.user.UserApiClient
-import java.security.MessageDigest
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        //파싱코드 배포시 제거
        /* var file = InputStreamReader(getResources().openRawResource(R.raw.test1))
         var fileReader: BufferedReader? = null
         var csvReader: CSVReader? = null
@@ -72,10 +68,8 @@ class MainActivity : AppCompatActivity() {
                 .child("태그").setValue("${Arrays.deepToString(arrayOf(data[0])).replace("[","").replace("]","")}","태그")
         }   */
 
-
-
-
-        try {
+        //해쉬키 얻기
+      /*  try {
             val info =
                 packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNING_CERTIFICATES)
             val signatures = info.signingInfo.apkContentsSigners
@@ -89,7 +83,7 @@ class MainActivity : AppCompatActivity() {
             }
         } catch (e: Exception) {
             Log.e("name not found", e.toString())
-        }
+        }*/
 
         val btn_login = findViewById<Button>(R.id.btn_login) as ImageButton
 
@@ -103,8 +97,7 @@ class MainActivity : AppCompatActivity() {
                         Toast.makeText(this, "유효하지 않은 앱", Toast.LENGTH_SHORT).show()
                     }
                     error.toString() == InvalidGrant.toString() -> {
-                        Toast.makeText(this, "인증 수단이 유효하지 않아 인증할 수 없는 상태", Toast.LENGTH_SHORT)
-                            .show()
+                        Toast.makeText(this, "인증 수단이 유효하지 않아 인증할 수 없는 상태", Toast.LENGTH_SHORT).show()
                     }
                     error.toString() == InvalidRequest.toString() -> {
                         Toast.makeText(this, "요청 파라미터 오류", Toast.LENGTH_SHORT).show()
@@ -113,8 +106,7 @@ class MainActivity : AppCompatActivity() {
                         Toast.makeText(this, "유효하지 않은 scope ID", Toast.LENGTH_SHORT).show()
                     }
                     error.toString() == Misconfigured.toString() -> {
-                        Toast.makeText(this, "설정이 올바르지 않음(android key hash)", Toast.LENGTH_SHORT)
-                            .show()
+                        Toast.makeText(this, "설정이 올바르지 않음(android key hash)", Toast.LENGTH_SHORT).show()
                     }
                     error.toString() == ServerError.toString() -> {
                         Toast.makeText(this, "서버 내부 에러", Toast.LENGTH_SHORT).show()
@@ -124,32 +116,34 @@ class MainActivity : AppCompatActivity() {
                     }
                     else -> { // Unknown
                         Toast.makeText(this, "기타 에러", Toast.LENGTH_SHORT).show()
-
                     }
                 }
-            } else if (token != null) {
+            }
+            else if (token != null) {   //로그인 성공
                 Toast.makeText(this, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, MapActivity::class.java)
                 startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                // 정보 저장하기
+                UserApiClient.instance.me { user, error ->
+                    if (error != null) {
+                        Toast.makeText(this, "사용자 정보 요청 실패", Toast.LENGTH_SHORT).show()
+                    } else if (user != null) {
+                        databaseReference.child("사용자").child("${user.id}").child("카카오").child("ID").setValue("${user.id}","ID:")
+                        databaseReference.child("사용자").child("${user.id}").child("카카오").child("닉네임").setValue("${user.kakaoAccount?.profile?.nickname}","닉네임")
+                        databaseReference.child("사용자").child("${user.id}").child("카카오").child("프로필URL").setValue("${user.kakaoAccount?.profile?.thumbnailImageUrl}","프로필URL")
+                        //   "\n이메일: ${user.kakaoAccount?.email}" +
+                        //  "\n프로필사진: ${user.kakaoAccount?.profile?.thumbnailImageUrl}"
+                    }
+                }
             }
         }
 
         btn_login.setOnClickListener {
-            if (LoginClient.instance.isKakaoTalkLoginAvailable(this)) {
-                LoginClient.instance.loginWithKakaoTalk(this, callback = callback)
-            } else {
-                LoginClient.instance.loginWithKakaoAccount(this, callback = callback)
-            }
-
-            UserApiClient.instance.me { user, error ->
-                if (error != null) {
-                    Toast.makeText(this, "사용자 정보 요청 실패", Toast.LENGTH_SHORT).show()
-                } else if (user != null) {
-                    databaseReference.child("사용자").child("${user.id}").child("카카오").child("ID").setValue("${user.id}","ID:")
-                    databaseReference.child("사용자").child("${user.id}").child("카카오").child("닉네임").setValue("${user.kakaoAccount?.profile?.nickname}","닉네임")
-                    databaseReference.child("사용자").child("${user.id}").child("카카오").child("프로필URL").setValue("${user.kakaoAccount?.profile?.thumbnailImageUrl}","프로필URL")
-                    //   "\n이메일: ${user.kakaoAccount?.email}" +
-                    //  "\n프로필사진: ${user.kakaoAccount?.profile?.thumbnailImageUrl}"
+            LoginClient.instance.run {
+                if (isKakaoTalkLoginAvailable(this@MainActivity)) {
+                    LoginClient.instance.loginWithKakaoTalk(this@MainActivity, callback = callback)
+                } else {
+                    LoginClient.instance.loginWithKakaoAccount(this@MainActivity, callback = callback)
                 }
             }
         }

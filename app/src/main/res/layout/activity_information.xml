@@ -7,13 +7,16 @@
     tools:context=".information">
 
     <TextView
-        android:id="@+id/text_Title"
+        android:id="@+id/textView3"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="#03A9F4"
+        android:layout_height="70dp"
+        android:background="@drawable/map_image_0000_top_1"
         android:gravity="center"
-        android:text="TextView"
+        android:text="근처에 있는 전기차 충전소들의 위치에요"
         android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,7 +25,6 @@
         android:layout_width="0dp"
         android:layout_height="60dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btn_back"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_help" />
 
@@ -30,9 +32,8 @@
         android:id="@+id/view_Inimage"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:layout_marginTop="1dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_Title"
+        tools:layout_editor_absoluteY="61dp"
         tools:srcCompat="@tools:sample/avatars" />
 
     <View
@@ -153,15 +154,13 @@
 
     <ImageButton
         android:id="@+id/btn_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="11dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="264dp"
-        app:layout_constraintEnd_toStartOf="@+id/btn_help2"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/image_arrow"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_revert" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/btn_star"

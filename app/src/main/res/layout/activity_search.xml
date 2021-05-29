@@ -8,31 +8,25 @@
     android:layout_height="match_parent"
     tools:context=".SearchActivity">
 
-    <ImageButton
-        android:id="@+id/btn_help3"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_help" />
-
     <TextView
-        android:id="@+id/text_Title5"
+        android:id="@+id/textView"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="#03A9F4"
+        android:layout_height="70dp"
+        android:background="@drawable/map_image_0000_top_1"
         android:gravity="center"
-        android:text="직접 찾아보고 싶으신가요?"
+        android:text="근처에 있는 전기차 충전소들의 위치에요"
         android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="70dp"
+        android:background="@drawable/map_button_bar"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -43,40 +37,43 @@
             android:layout_width="360dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="검색"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/btn_mypage"
-            android:layout_width="360dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="마이페이지"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:background="#00FF0000"
+            android:gravity="center"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:icon="@drawable/map_image_0010_menubutton_2"
+            app:iconGravity="top"
+            app:iconPadding="10dp"
+            app:iconSize="50dp"
+            app:iconTint="#673AB7" />
 
         <Button
             android:id="@+id/btn_map"
             android:layout_width="360dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="지도"
+            android:background="#00FF0000"
             android:textSize="18sp"
-            android:textStyle="bold" />
-    </LinearLayout>
+            android:textStyle="bold"
+            app:icon="@drawable/map_image_0012_menubutton_4"
+            app:iconGravity="top"
+            app:iconPadding="20dp"
+            app:iconSize="50dp" />
 
-    <EditText
-        android:id="@+id/editTextTextPersonName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_Title5" />
+        <Button
+            android:id="@+id/btn_mypage"
+            android:layout_width="360dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#00FF0000"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:icon="@drawable/map_image_0013_menubutton_6"
+            app:iconGravity="top"
+            app:iconPadding="20dp"
+            app:iconSize="50dp"
+            app:iconTint="#673AB7" />
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/review"
@@ -89,5 +86,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         />
+
+    <ImageButton
+        android:id="@+id/btn_help3"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/map_image_help"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
