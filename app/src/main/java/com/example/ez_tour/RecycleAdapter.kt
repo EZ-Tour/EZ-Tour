@@ -1,14 +1,18 @@
 package com.example.ez_tour
 
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.customballoon.view.*
 import kotlinx.android.synthetic.main.viewholder.view.*
 
 
-class RecyclerAdapter(private val items: ArrayList<RecycleData>) :
+class RecyclerAdapter(private val items: ArrayList<RecycleData>,context: Context) :
     RecyclerView.Adapter<RecyclerAdapter.ViewHolder>(){
 
     override fun getItemCount() = items.size
@@ -17,7 +21,11 @@ class RecyclerAdapter(private val items: ArrayList<RecycleData>) :
     override fun onBindViewHolder(holder: RecyclerAdapter.ViewHolder, position: Int) {
         val item = items[position]
         val listener = View.OnClickListener {it ->
-            Toast.makeText(it.context, "Clicked:", Toast.LENGTH_SHORT).show()
+            val intent = Intent(holder.itemView.context,InformationActivity::class.java)
+            intent.putExtra("name",holder.itemView.text_rename.toString())
+            intent.putExtra("tag",holder.itemView.view_retag.toString())
+            ContextCompat.startActivity(holder.itemView.context,intent,null)
+
         }
         holder.apply {
             bind(listener, item)

@@ -12,12 +12,11 @@
         android:id="@+id/text_Title3"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:layout_marginBottom="23dp"
         android:background="@drawable/map_image_0000_top_1"
         android:gravity="center"
         android:text="회원님을 위해 준비한 공간이에요"
         android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/btn_appinfo"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,7 +35,8 @@
             android:layout_height="40dp"
             android:gravity="center|center_horizontal"
             android:text="찜한 곳들"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
@@ -84,7 +84,8 @@
             app:icon="@drawable/map_image_0012_menubutton_4"
             app:iconGravity="top"
             app:iconPadding="20dp"
-            app:iconSize="50dp" />
+            app:iconSize="50dp"
+            app:iconTint="#673AB7" />
 
         <Button
             android:id="@+id/btn_mypage"
@@ -97,8 +98,7 @@
             app:icon="@drawable/map_image_0013_menubutton_6"
             app:iconGravity="top"
             app:iconPadding="20dp"
-            app:iconSize="50dp"
-            app:iconTint="#673AB7" />
+            app:iconSize="50dp" />
     </LinearLayout>
 
     <ImageView
@@ -126,8 +126,10 @@
         android:id="@+id/text_nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="30dp"
         android:text="회원님"
+        android:textColor="#000000"
+        android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

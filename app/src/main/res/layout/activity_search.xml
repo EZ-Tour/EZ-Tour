@@ -44,8 +44,7 @@
             app:icon="@drawable/map_image_0010_menubutton_2"
             app:iconGravity="top"
             app:iconPadding="10dp"
-            app:iconSize="50dp"
-            app:iconTint="#673AB7" />
+            app:iconSize="50dp" />
 
         <Button
             android:id="@+id/btn_map"
@@ -58,7 +57,8 @@
             app:icon="@drawable/map_image_0012_menubutton_4"
             app:iconGravity="top"
             app:iconPadding="20dp"
-            app:iconSize="50dp" />
+            app:iconSize="50dp"
+            app:iconTint="#673AB7" />
 
         <Button
             android:id="@+id/btn_mypage"

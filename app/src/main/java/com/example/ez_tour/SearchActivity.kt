@@ -12,14 +12,16 @@ import kotlinx.android.synthetic.main.activity_search.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-val nameData = ArrayList<String>()
-val tagData = ArrayList<String>()
+
 class SearchActivity : AppCompatActivity() {
 
     private val firebaseDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
     private val databaseReference: DatabaseReference = firebaseDatabase.getReference()
     val list = ArrayList<RecycleData>()
     var count:Int = 0
+    val nameData = ArrayList<String>()
+    val tagData = ArrayList<String>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -42,13 +44,13 @@ class SearchActivity : AppCompatActivity() {
                         tagData.add("${i.child("태그").getValue()}")
                         list.add(RecycleData("${i.child("이름").getValue()}", "${i.child("태그").getValue()}"))
                         count++
-                        Log.d("MainActivity", "Count:" + count);
+                        Log.d("MainActivity", "Count:" + count)
                     }
                 } else {
                     Toast.makeText(getApplicationContext(), "Datasnapshot is null", Toast.LENGTH_SHORT).show()
                 }
                 Log.d("Listtest", "${ Arrays.deepToString(arrayOf(list))}")
-                val adapter = RecyclerAdapter(list)
+                val adapter = RecyclerAdapter(list,this@SearchActivity)
                 review.adapter = adapter
             }
 
@@ -76,7 +78,7 @@ class SearchActivity : AppCompatActivity() {
                     Toast.makeText(getApplicationContext(), "Datasnapshot is null", Toast.LENGTH_SHORT).show()
                 }
                 Log.d("Listtest3", list.toString())
-                val adapter = RecyclerAdapter(list)
+                val adapter = RecyclerAdapter(list,this@SearchActivity)
                 review.adapter = adapter
             }
 
@@ -104,7 +106,7 @@ class SearchActivity : AppCompatActivity() {
                     Toast.makeText(getApplicationContext(), "Datasnapshot is null", Toast.LENGTH_SHORT).show()
                 }
                 Log.d("Listtest", list.toString())
-                val adapter = RecyclerAdapter(list)
+                val adapter = RecyclerAdapter(list,this@SearchActivity)
                 review.adapter = adapter
             }
 
@@ -131,7 +133,7 @@ class SearchActivity : AppCompatActivity() {
                     Toast.makeText(getApplicationContext(), "Datasnapshot is null", Toast.LENGTH_SHORT).show()
                 }
                 Log.d("Listtest", list.toString())
-                val adapter = RecyclerAdapter(list)
+                val adapter = RecyclerAdapter(list,this@SearchActivity)
                 review.adapter = adapter
             }
 
@@ -141,7 +143,7 @@ class SearchActivity : AppCompatActivity() {
         })
 
         Log.d("Listtest2", list.toString())
-        val adapter = RecyclerAdapter(list)
+        val adapter = RecyclerAdapter(list,this@SearchActivity)
         review.adapter = adapter
 
 

@@ -1,7 +1,10 @@
 package com.example.ez_tour
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Base64
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
@@ -12,6 +15,7 @@ import com.kakao.sdk.auth.LoginClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.AuthErrorCause.*
 import com.kakao.sdk.user.UserApiClient
+import java.security.MessageDigest
 
 class MainActivity : AppCompatActivity() {
 
@@ -69,7 +73,7 @@ class MainActivity : AppCompatActivity() {
         }   */
 
         //해쉬키 얻기
-      /*  try {
+        try {
             val info =
                 packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNING_CERTIFICATES)
             val signatures = info.signingInfo.apkContentsSigners
@@ -83,7 +87,7 @@ class MainActivity : AppCompatActivity() {
             }
         } catch (e: Exception) {
             Log.e("name not found", e.toString())
-        }*/
+        }
 
         val btn_login = findViewById<Button>(R.id.btn_login) as ImageButton
 
@@ -116,6 +120,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     else -> { // Unknown
                         Toast.makeText(this, "기타 에러", Toast.LENGTH_SHORT).show()
+                        Log.d("error",error.toString())
                     }
                 }
             }

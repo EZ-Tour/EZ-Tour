@@ -25,22 +25,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- 로그인 화면 -->
-        <activity android:name=".Login">
+        <!-- 로그인 화면 kakao61c8188e57dfd2ad836236244c72f0e4-->
+        <activity android:name= "com.kakao.sdk.auth.AuthCodeHandlerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <!-- 네이티브 앱 키 확인 -->
-                <data
-                    android:host="oauth"
+
+                <!-- Redirect URI: "kakao{NATIVE_APP_KEY}://oauth“ -->
+                <data android:host="oauth"
                     android:scheme="kakao61c8188e57dfd2ad836236244c72f0e4" />
             </intent-filter>
         </activity>
+
         <activity android:name=".AppinfoActivity" />
         <activity android:name=".MypageActivity" />
         <activity android:name=".SearchActivity" />
-        <activity android:name=".information" />
+        <activity android:name=".InformationActivity" />
         <activity android:name=".MapActivity" />
 
         <meta-data
