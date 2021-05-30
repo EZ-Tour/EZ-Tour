@@ -3,17 +3,24 @@ package com.example.ez_tour
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.*
 import com.kakao.sdk.user.UserApiClient
+import kotlinx.android.synthetic.main.activity_search.*
 import java.net.URL
+import java.util.*
 
 class MypageActivity : AppCompatActivity() {
 
     private val firebaseDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
     private val databaseReference: DatabaseReference = firebaseDatabase.getReference()
+    val list = ArrayList<RecycleData>()
+    var count:Int = 0
+    val nameData = ArrayList<String>()
+    val tagData = ArrayList<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -41,6 +48,46 @@ class MypageActivity : AppCompatActivity() {
                 var bitmap: Bitmap = image_task.execute().get()
                 view_profile.setImageBitmap(bitmap)
             }
+        }
+
+        val mRecyclerView = findViewById<RecyclerView>(R.id.review)
+
+        UserApiClient.instance.me { user, error ->
+            if (error != null) {
+                Toast.makeText(this, "사용자 정보 요청 실패", Toast.LENGTH_SHORT).show()
+            } else if (user != null) {
+                databaseReference.child("사용자").child("${user.id}").child("즐겨찾기").addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        if(dataSnapshot != null) {
+                            dataSnapshot.children.forEach { i ->
+                                Log.d("MainActivity", "Single ValueEventListener : " + i.getValue());
+                                //var image_task: URLtoBitmapTask = URLtoBitmapTask()
+                                //image_task = URLtoBitmapTask().apply {
+                                // url = URL("${i.child("이미지 URL").getValue()}")
+                                // }
+                                //var bitmap: Bitmap = image_task.execute().get()
+                                nameData.add("${i.child("이름").getValue()}")
+                                tagData.add("${i.child("태그").getValue()}")
+                                list.add(RecycleData("${i.child("이름").getValue()}", "${i.child("태그").getValue()}"))
+                                count++
+                                Log.d("MainActivity", "Count:" + count)
+                            }
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Datasnapshot is null", Toast.LENGTH_SHORT).show()
+                        }
+                        Log.d("Listtest", "${ Arrays.deepToString(arrayOf(list))}")
+                        val adapter = RecyclerAdapter(list,this@MypageActivity)
+                        review.adapter = adapter
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        TODO("Not yet implemented")
+                    }
+
+                })
+
+                }
+
         }
 
 

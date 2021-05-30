@@ -29,8 +29,7 @@ class SearchActivity : AppCompatActivity() {
 
        val mRecyclerView = findViewById<RecyclerView>(R.id.review)
 
-
-      databaseReference.child("카페").addValueEventListener(object : ValueEventListener {
+        databaseReference.child("카페").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if(dataSnapshot != null) {
                     dataSnapshot.children.forEach { i ->
@@ -59,7 +58,8 @@ class SearchActivity : AppCompatActivity() {
             }
 
         })
-      databaseReference.child("관광명소").addValueEventListener(object : ValueEventListener {
+
+        databaseReference.child("관광명소").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if(dataSnapshot != null) {
                     dataSnapshot.children.forEach { i ->
@@ -87,7 +87,8 @@ class SearchActivity : AppCompatActivity() {
             }
 
         })
-       databaseReference.child("숙소").addValueEventListener(object : ValueEventListener {
+
+        databaseReference.child("숙소").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if(dataSnapshot != null) {
                     dataSnapshot.children.forEach { i ->
@@ -114,6 +115,7 @@ class SearchActivity : AppCompatActivity() {
                 TODO("Not yet implemented")
             }
         })
+
         databaseReference.child("음식점").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if(dataSnapshot != null) {

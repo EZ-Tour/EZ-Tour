@@ -5,15 +5,15 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.customballoon.view.*
 import kotlinx.android.synthetic.main.viewholder.view.*
 
 
 class RecyclerAdapter(private val items: ArrayList<RecycleData>,context: Context) :
-    RecyclerView.Adapter<RecyclerAdapter.ViewHolder>(){
+    RecyclerView.Adapter<RecyclerAdapter.ViewHolder>(), Filterable {
 
     override fun getItemCount() = items.size
 
@@ -53,4 +53,8 @@ class RecyclerAdapter(private val items: ArrayList<RecycleData>,context: Context
         }
 
     }
+
+    override fun getFilter(): Filter {
+        TODO("Not yet implemented")
     }
+}
