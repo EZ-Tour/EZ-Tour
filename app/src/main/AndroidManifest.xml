@@ -18,7 +18,8 @@
         android:theme="@style/Theme.EZ_Tour"
         android:usesCleartextTraffic="true">
         <!-- Main -->
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -40,7 +41,8 @@
 
         <activity android:name=".AppinfoActivity" />
         <activity android:name=".MypageActivity" />
-        <activity android:name=".SearchActivity" />
+        <activity android:name=".SearchActivity"
+            android:windowSoftInputMode="adjustNothing"/>
         <activity android:name=".InformationActivity" />
         <activity android:name=".MapActivity" />
 

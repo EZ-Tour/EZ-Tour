@@ -2,9 +2,11 @@ package com.example.ez_tour
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
-import android.widget.Button
-import android.widget.Toast
+import android.view.View
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.*
@@ -13,7 +15,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : AppCompatActivity() ,TextWatcher {
 
     private val firebaseDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
     private val databaseReference: DatabaseReference = firebaseDatabase.getReference()
@@ -21,14 +23,16 @@ class SearchActivity : AppCompatActivity() {
     var count:Int = 0
     val nameData = ArrayList<String>()
     val tagData = ArrayList<String>()
-
+    val adapter = RecyclerAdapter(list,this@SearchActivity)
+    val slist = ArrayList<RecycleData>()
+    val spadapter = RecyclerAdapter(slist,this@SearchActivity)
+    var page: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-
-
-       val mRecyclerView = findViewById<RecyclerView>(R.id.review)
-
+        val editText = findViewById<EditText>(R.id.searcBar)
+        val mRecyclerView = findViewById<RecyclerView>(R.id.review)
+        var sResult = String()
         databaseReference.child("카페").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if(dataSnapshot != null) {
@@ -41,16 +45,14 @@ class SearchActivity : AppCompatActivity() {
                         //var bitmap: Bitmap = image_task.execute().get()
                         nameData.add("${i.child("이름").getValue()}")
                         tagData.add("${i.child("태그").getValue()}")
-                        list.add(RecycleData("${i.child("이름").getValue()}", "${i.child("태그").getValue()}"))
+                        list.add(RecycleData(count,"${i.child("이름").getValue()}", "${i.child("태그").getValue()}"))
                         count++
                         Log.d("MainActivity", "Count:" + count)
                     }
                 } else {
                     Toast.makeText(getApplicationContext(), "Datasnapshot is null", Toast.LENGTH_SHORT).show()
                 }
-                Log.d("Listtest", "${ Arrays.deepToString(arrayOf(list))}")
-                val adapter = RecyclerAdapter(list,this@SearchActivity)
-                review.adapter = adapter
+                Log.d("Listtest1", "${ Arrays.deepToString(arrayOf(list))}")
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -69,7 +71,7 @@ class SearchActivity : AppCompatActivity() {
                         // url = URL("${i.child("이미지 URL").getValue()}")
                         // }
                         //var bitmap: Bitmap = image_task.execute().get()
-                        list.add(count,RecycleData(i.child("이름").getValue() as String,
+                        list.add(RecycleData(count,i.child("이름").getValue() as String,
                             i.child("태그").getValue() as String))
                         count++
                         Log.d("MainActivity", "Count:" + count);
@@ -77,9 +79,7 @@ class SearchActivity : AppCompatActivity() {
                 } else {
                     Toast.makeText(getApplicationContext(), "Datasnapshot is null", Toast.LENGTH_SHORT).show()
                 }
-                Log.d("Listtest3", list.toString())
-                val adapter = RecyclerAdapter(list,this@SearchActivity)
-                review.adapter = adapter
+                Log.d("Listtest2", list.toString())
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -98,7 +98,7 @@ class SearchActivity : AppCompatActivity() {
                         // url = URL("${i.child("이미지 URL").getValue()}")
                         // }
                         //var bitmap: Bitmap = image_task.execute().get()
-                        list.add(count,RecycleData(i.child("이름").getValue() as String,
+                        list.add(RecycleData(count,i.child("이름").getValue() as String,
                             i.child("태그").getValue() as String))
                         count++
                         Log.d("MainActivity", "Count:" + count);
@@ -106,9 +106,7 @@ class SearchActivity : AppCompatActivity() {
                 } else {
                     Toast.makeText(getApplicationContext(), "Datasnapshot is null", Toast.LENGTH_SHORT).show()
                 }
-                Log.d("Listtest", list.toString())
-                val adapter = RecyclerAdapter(list,this@SearchActivity)
-                review.adapter = adapter
+                Log.d("Listtest3", list.toString())
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -126,7 +124,7 @@ class SearchActivity : AppCompatActivity() {
                         // url = URL("${i.child("이미지 URL").getValue()}")
                         // }
                         //var bitmap: Bitmap = image_task.execute().get()
-                        list.add(RecycleData(i.child("이름").getValue() as String,
+                        list.add(RecycleData(count,i.child("이름").getValue() as String,
                             i.child("태그").getValue() as String))
                         count++
                         Log.d("MainActivity", "Count:" + count);
@@ -134,9 +132,8 @@ class SearchActivity : AppCompatActivity() {
                 } else {
                     Toast.makeText(getApplicationContext(), "Datasnapshot is null", Toast.LENGTH_SHORT).show()
                 }
-                Log.d("Listtest", list.toString())
-                val adapter = RecyclerAdapter(list,this@SearchActivity)
-                review.adapter = adapter
+                Log.d("Listtest4", list.toString())
+                mRecyclerView.adapter = adapter
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -145,12 +142,74 @@ class SearchActivity : AppCompatActivity() {
         })
 
         Log.d("Listtest2", list.toString())
-        val adapter = RecyclerAdapter(list,this@SearchActivity)
-        review.adapter = adapter
+        mRecyclerView.adapter = adapter
+        mRecyclerView.setHasFixedSize(true)
 
+        editText.addTextChangedListener(this)
+        var sData = resources.getStringArray(R.array.spinnerdata)
+        var sadapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, sData)
+        spinner.adapter = sadapter
+        spinner.setSelection(0)
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                sResult = sData.get(position).toString()
+                if (sResult.equals("전체")){
+                    try {
+                        mRecyclerView.adapter = adapter
+                        page = 0
+                    } catch (e: Exception) {
+                    }
+                }else if (sResult.equals("일반 충전소")) {
 
+                }else if (sResult.equals("상점")){
 
+                }else if (sResult.equals("음식점")){
 
+                }else if (sResult.equals("숙소")){
+
+                }else if (sResult.equals("카페")){
+                    databaseReference.child("카페").addValueEventListener(object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            if(dataSnapshot != null) {
+                                dataSnapshot.children.forEach { i ->
+                                    Log.d("MainActivity", "Single ValueEventListener : " + i.getValue());
+                                    //var image_task: URLtoBitmapTask = URLtoBitmapTask()
+                                    //image_task = URLtoBitmapTask().apply {
+                                    // url = URL("${i.child("이미지 URL").getValue()}")
+                                    // }
+                                    //var bitmap: Bitmap = image_task.execute().get()
+                                    nameData.add("${i.child("이름").getValue()}")
+                                    tagData.add("${i.child("태그").getValue()}")
+                                    slist.add(RecycleData(count,"${i.child("이름").getValue()}", "${i.child("태그").getValue()}"))
+                                    count++
+                                    Log.d("MainActivity", "Count:" + count)
+                                }
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Datasnapshot is null", Toast.LENGTH_SHORT).show()
+                            }
+                            Log.d("Listtest1", "${ Arrays.deepToString(arrayOf(list))}")
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            TODO("Not yet implemented")
+                        }
+
+                    })
+                    try {
+                        mRecyclerView.adapter = spadapter
+                        page = 1
+                    } catch (e: Exception) {
+                    }
+                }else {
+
+                }
+
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+
+        }
 
         val btn_map = findViewById<Button>(R.id.btn_map)
         val btn_mypage = findViewById<Button>(R.id.btn_mypage)
@@ -165,6 +224,22 @@ class SearchActivity : AppCompatActivity() {
             val intent = Intent(this, MypageActivity::class.java)
             startActivity(intent)
         }
+
+    }
+
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+    }
+
+    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        if(page == 0) {
+        adapter.getFilter().filter(s.toString())
+    }else{
+        spadapter.getFilter().filter(s.toString())
+        }
+    }
+
+    override fun afterTextChanged(s: Editable?) {
 
     }
 

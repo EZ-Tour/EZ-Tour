@@ -6,7 +6,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SearchActivity">
+    tools:context=".SearchActivity"
+    android:windowSoftInputMode="adjustNothing">
 
     <TextView
         android:id="@+id/textView"
@@ -22,6 +23,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
@@ -30,7 +40,8 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        android:windowSoftInputMode="adjustNothing">
 
         <Button
             android:id="@+id/btn_search"
@@ -44,7 +55,8 @@
             app:icon="@drawable/map_image_0010_menubutton_2"
             app:iconGravity="top"
             app:iconPadding="10dp"
-            app:iconSize="50dp" />
+            app:iconSize="50dp"
+            android:windowSoftInputMode="adjustNothing"/>
 
         <Button
             android:id="@+id/btn_map"
@@ -58,7 +70,8 @@
             app:iconGravity="top"
             app:iconPadding="20dp"
             app:iconSize="50dp"
-            app:iconTint="#673AB7" />
+            app:iconTint="#673AB7"
+            android:windowSoftInputMode="adjustNothing"/>
 
         <Button
             android:id="@+id/btn_mypage"
@@ -85,7 +98,7 @@
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        />
+        android:windowSoftInputMode="adjustNothing"/>
 
     <ImageButton
         android:id="@+id/btn_help3"
@@ -95,6 +108,19 @@
         android:layout_marginBottom="20dp"
         android:background="@drawable/map_image_help"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:windowSoftInputMode="adjustNothing"/>
+
+    <EditText
+        android:id="@+id/searcBar"
+        android:layout_width="230dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:windowSoftInputMode="adjustNothing"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

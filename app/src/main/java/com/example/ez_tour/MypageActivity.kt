@@ -68,7 +68,7 @@ class MypageActivity : AppCompatActivity() {
                                 //var bitmap: Bitmap = image_task.execute().get()
                                 nameData.add("${i.child("이름").getValue()}")
                                 tagData.add("${i.child("태그").getValue()}")
-                                list.add(RecycleData("${i.child("이름").getValue()}", "${i.child("태그").getValue()}"))
+                                list.add(RecycleData(count,"${i.child("이름").getValue()}", "${i.child("태그").getValue()}"))
                                 count++
                                 Log.d("MainActivity", "Count:" + count)
                             }
