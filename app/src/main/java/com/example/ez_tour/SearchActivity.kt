@@ -52,7 +52,7 @@ class SearchActivity : AppCompatActivity() ,TextWatcher {
                 } else {
                     Toast.makeText(getApplicationContext(), "Datasnapshot is null", Toast.LENGTH_SHORT).show()
                 }
-                Log.d("Listtest1", "${ Arrays.deepToString(arrayOf(list))}")
+                Log.d("Listtest1", list.toString())
             }
 
             override fun onCancelled(error: DatabaseError) {

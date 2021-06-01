@@ -17,17 +17,18 @@ class MypageActivity : AppCompatActivity() {
 
     private val firebaseDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
     private val databaseReference: DatabaseReference = firebaseDatabase.getReference()
-    val list = ArrayList<RecycleData>()
-    var count:Int = 0
-    val nameData = ArrayList<String>()
-    val tagData = ArrayList<String>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mypage)
+
+        val slist = ArrayList<StarData>()
+        var count:Int = 0
+        val nameData = ArrayList<String>()
+        val tagData = ArrayList<String>()
+        val StarView = findViewById<RecyclerView>(R.id.StarVIew)
+        val adapter = StarAdapter(slist,this@MypageActivity)
 
         val btn_map = findViewById<Button>(R.id.btn_map)
         val btn_search = findViewById<Button>(R.id.btn_search)
@@ -50,7 +51,7 @@ class MypageActivity : AppCompatActivity() {
             }
         }
 
-        val mRecyclerView = findViewById<RecyclerView>(R.id.review)
+
 
         UserApiClient.instance.me { user, error ->
             if (error != null) {
@@ -68,16 +69,15 @@ class MypageActivity : AppCompatActivity() {
                                 //var bitmap: Bitmap = image_task.execute().get()
                                 nameData.add("${i.child("이름").getValue()}")
                                 tagData.add("${i.child("태그").getValue()}")
-                                list.add(RecycleData(count,"${i.child("이름").getValue()}", "${i.child("태그").getValue()}"))
+                                slist.add(StarData(count,"${i.child("이름").getValue()}", "${i.child("태그").getValue()}"))
                                 count++
                                 Log.d("MainActivity", "Count:" + count)
                             }
                         } else {
                             Toast.makeText(getApplicationContext(), "Datasnapshot is null", Toast.LENGTH_SHORT).show()
                         }
-                        Log.d("Listtest", "${ Arrays.deepToString(arrayOf(list))}")
-                        val adapter = RecyclerAdapter(list,this@MypageActivity)
-                        review.adapter = adapter
+                        Log.d("StarListtest", slist.toString())
+                        StarView.adapter = adapter
                     }
 
                     override fun onCancelled(error: DatabaseError) {
@@ -89,6 +89,9 @@ class MypageActivity : AppCompatActivity() {
                 }
 
         }
+        Log.d("StarListtest", slist.toString())
+       StarView.adapter = adapter
+       StarView.setHasFixedSize(true)
 
 
         btn_search.setOnClickListener {

@@ -6,6 +6,59 @@
     android:layout_height="match_parent"
     tools:context=".InformationActivity">
 
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@drawable/map_button_bar"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/btn_search"
+            android:layout_width="360dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#00FF0000"
+            android:gravity="center"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:icon="@drawable/map_image_0010_menubutton_2"
+            app:iconGravity="top"
+            app:iconPadding="10dp"
+            app:iconSize="50dp"
+            app:iconTint="#673AB7" />
+
+        <Button
+            android:id="@+id/btn_map"
+            android:layout_width="360dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#00FF0000"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:icon="@drawable/map_image_0012_menubutton_4"
+            app:iconGravity="top"
+            app:iconPadding="20dp"
+            app:iconSize="50dp"
+            app:iconTint="#673AB7" />
+
+        <Button
+            android:id="@+id/btn_mypage"
+            android:layout_width="360dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#00FF0000"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:icon="@drawable/map_image_0013_menubutton_6"
+            app:iconGravity="top"
+            app:iconPadding="20dp"
+            app:iconSize="50dp" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/textView3"
         android:layout_width="match_parent"
@@ -38,112 +91,86 @@
         app:layout_constraintTop_toBottomOf="@+id/textView3"
         tools:srcCompat="@tools:sample/avatars" />
 
-    <View
-        android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view_Inimage" />
-
-    <LinearLayout
-        android:layout_width="409dp"
-        android:layout_height="138dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginBottom="1dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view">
-
-        <Button
-            android:id="@+id/btn_vicinity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="여기서 가장 가까운 관광 포인트는 어디일까요?" />
-
-        <Button
-            android:id="@+id/btn_navi"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="이곳을 도착점으로 하는 경로를 살펴볼까요?" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <Button
-            android:id="@+id/btn_search"
-            android:layout_width="360dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="검색"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/btn_map"
-            android:layout_width="360dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="지도"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/btn_mypage"
-            android:layout_width="360dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="마이페이지"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
     <TextView
-        android:id="@+id/view_inaddress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="50dp"
-        android:text="주소"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view_Inimage" />
-
-    <TextView
-        android:id="@+id/view_incall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
+        android:id="@+id/text_inname"
+        android:layout_width="320dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="75dp"
         android:layout_marginTop="20dp"
-        android:text="연락처"
+        android:background="@drawable/map_image_0003_messagebutton_1"
+        android:gravity="center"
+        android:text="이름 예시"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view_inaddress" />
+        app:layout_constraintTop_toBottomOf="@+id/view_Inimage" />
 
     <TextView
         android:id="@+id/text_inaddress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="50dp"
+        android:layout_width="320dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/map_image_0003_messagebutton_1"
+        android:gravity="center"
         android:text="주소 예시"
-        app:layout_constraintStart_toEndOf="@+id/view_inaddress"
-        app:layout_constraintTop_toBottomOf="@+id/view_Inimage" />
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_inname" />
 
     <TextView
         android:id="@+id/text_incall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_width="320dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="75dp"
         android:layout_marginTop="20dp"
+        android:background="@drawable/map_image_0003_messagebutton_1"
+        android:gravity="center"
         android:text="연락처 예시"
-        app:layout_constraintStart_toEndOf="@+id/view_incall"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_inaddress" />
+
+    <TextView
+        android:id="@+id/view_inname"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/map_image_0001_button_2"
+        android:gravity="center"
+        android:text="이름"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_Inimage" />
+
+    <TextView
+        android:id="@+id/view_inaddress"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/map_image_0001_button_2"
+        android:gravity="center"
+        android:text="주소"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_inname" />
+
+    <TextView
+        android:id="@+id/view_incall"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/map_image_0001_button_2"
+        android:gravity="center"
+        android:text="연락처"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_inaddress" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -173,5 +200,29 @@
         app:layout_constraintBottom_toBottomOf="@+id/view_Inimage"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/btn_star" />
+
+    <ImageButton
+        android:id="@+id/btn_navi"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/map_image_0003_messagebutton_1"
+        android:backgroundTintMode="src_in"
+        android:text="경로 살펴보기"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="경로 살펴보기"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_navi"
+        app:layout_constraintEnd_toEndOf="@+id/btn_navi"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_navi" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

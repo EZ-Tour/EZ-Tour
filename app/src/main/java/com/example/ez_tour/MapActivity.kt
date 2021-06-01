@@ -25,7 +25,6 @@ import net.daum.mf.map.api.MapView
 import java.lang.Math.*
 import kotlin.math.pow
 
-
 val NameData = ArrayList<String>()
 val LongitudeData = ArrayList<Double>()
 val LatitudeData = ArrayList<Double>()
@@ -220,8 +219,8 @@ class MapActivity : AppCompatActivity(), MapView.POIItemEventListener {
 
     override fun onPOIItemSelected(mapView: MapView, mapPOIItem: MapPOIItem) {
         val markerName:String = NameData[mapPOIItem!!.tag]
-      var latA:Double = LatitudeData[mapPOIItem!!.tag]
-      var lonA:Double = LongitudeData[mapPOIItem!!.tag]
+        var latA:Double = LatitudeData[mapPOIItem!!.tag]
+        var lonA:Double = LongitudeData[mapPOIItem!!.tag]
         Log.d("markerName",markerName)
         databaseReference.child("카페").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
