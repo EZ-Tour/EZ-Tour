@@ -29,7 +29,10 @@ val NameData = ArrayList<String>()
 val LongitudeData = ArrayList<Double>()
 val LatitudeData = ArrayList<Double>()
 val AddressData = ArrayList<String>()
-
+val gpsmarker = MapPOIItem()
+var marker1 = MapPOIItem()
+var marker = MapPOIItem()
+var h: Int = 0
 class MapActivity : AppCompatActivity(), MapView.POIItemEventListener {
 
     val PERMISSIONS_REQUEST_CODE = 100
@@ -95,7 +98,7 @@ class MapActivity : AppCompatActivity(), MapView.POIItemEventListener {
         val btn_help = findViewById<Button>(R.id.btn_help) as ImageButton
         var counter = 0
         // GPS 마커 초기화.
-        val gpsmarker = MapPOIItem()
+
         val btn_gps = findViewById<Button>(R.id.btn_gps) as ImageButton
         // 하단 버튼 초기화
         val btn_search = findViewById<Button>(R.id.btn_search)
@@ -117,7 +120,7 @@ class MapActivity : AppCompatActivity(), MapView.POIItemEventListener {
             if (counter == 0) {
                 counter++
                 btn_help.setImageResource(R.drawable.kakao_login_large_narrow)
-                   img_hlep.visibility = View.VISIBLE
+                img_hlep.visibility = View.VISIBLE
             } else {
                 counter--
                 btn_help.setImageResource(R.drawable.common_google_signin_btn_icon_dark)
@@ -176,7 +179,7 @@ class MapActivity : AppCompatActivity(), MapView.POIItemEventListener {
                         LatitudeData.add("${i.child("좌표").child("위도").getValue()}".toDouble())
                         Log.d("MainActivity", "Single Value: " + LongitudeData[n] )
                         var marker = MapPOIItem()
-                        marker.mapPoint= MapPoint.mapPointWithGeoCoord(LongitudeData[n], LatitudeData[n])
+                        marker.mapPoint= MapPoint.mapPointWithGeoCoord(LatitudeData[n],LongitudeData[n])
                         marker.itemName= NameData[n]
                         marker.tag = n
                         marker.markerType = MapPOIItem.MarkerType.BluePin
@@ -200,14 +203,36 @@ class MapActivity : AppCompatActivity(), MapView.POIItemEventListener {
 
     }
 
-    class CustomBalloonAdapter(inflater: LayoutInflater,poiItem: MapPOIItem?): CalloutBalloonAdapter {
+    class CustomBalloonAdapter(inflater: LayoutInflater,poiItem: MapPOIItem): CalloutBalloonAdapter {
         val mCalloutBalloon: View = inflater.inflate(R.layout.customballoon, null)
         val name: TextView = mCalloutBalloon.findViewById(R.id.text_name)
         val address: TextView = mCalloutBalloon.findViewById(R.id.text_address)
-        override fun getCalloutBalloon(poiItem: MapPOIItem?): View {
-            name.text= NameData[poiItem!!.tag]
-            address.text = AddressData[poiItem!!.tag]
+        override fun getCalloutBalloon(poiItem: MapPOIItem): View {
+            if(poiItem == gpsmarker){
+                name.text="여기는"
+                address.text="현재위치입니다."
+            }else {
+                name.text = poiItem.itemName
+                var number: Int = poiItem.tag
+                address.text = AddressData[number]
+            }
+            return mCalloutBalloon
+        }
 
+        override fun getPressedCalloutBalloon(poiItem: MapPOIItem?): View {
+            // 말풍선 클릭 시
+            return mCalloutBalloon
+        }
+    }
+
+    class CustomBalloonAdapter2(inflater: LayoutInflater,poiItem: MapPOIItem): CalloutBalloonAdapter {
+        val mCalloutBalloon: View = inflater.inflate(R.layout.customballoon, null)
+        val name: TextView = mCalloutBalloon.findViewById(R.id.text_name)
+        val address: TextView = mCalloutBalloon.findViewById(R.id.text_address)
+        override fun getCalloutBalloon(poiItem: MapPOIItem): View {
+                name.text = poiItem.itemName
+                var number: Int = poiItem.tag
+                address.text = AddressData[number]
             return mCalloutBalloon
         }
 
@@ -218,52 +243,57 @@ class MapActivity : AppCompatActivity(), MapView.POIItemEventListener {
     }
 
     override fun onPOIItemSelected(mapView: MapView, mapPOIItem: MapPOIItem) {
-        val markerName:String = NameData[mapPOIItem!!.tag]
-        var latA:Double = LatitudeData[mapPOIItem!!.tag]
-        var lonA:Double = LongitudeData[mapPOIItem!!.tag]
-        Log.d("markerName",markerName)
-        databaseReference.child("카페").addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if(dataSnapshot != null) {
-                    dataSnapshot.children.forEach { i ->
-                        Log.d("MainActivity", "Single Value: " + i.child("이름").getValue())
-                        NameData.add("${i.child("이름").getValue()}")
-                        LongitudeData.add("${i.child("좌표").child("경도").getValue()}".toDouble())
-                        LatitudeData.add("${i.child("좌표").child("위도").getValue()}".toDouble())
-                        Log.d("MainActivity", "Single Value: " + LongitudeData[n] )
+        if (mapPOIItem != gpsmarker) {
+            val markerName: String = NameData[mapPOIItem.tag]
+            var latA: Double = LatitudeData[mapPOIItem.tag]
+            var lonA: Double = LongitudeData[mapPOIItem.tag]
 
-                        if (getDistance(latA,lonA, LatitudeData[n],LongitudeData[n]) <= 500000){
-                            var marker = MapPOIItem()
-                            marker.mapPoint= MapPoint.mapPointWithGeoCoord(LongitudeData[n], LatitudeData[n])
-                            marker.itemName= NameData[n]
-                            marker.tag = n
-                            marker.markerType = MapPOIItem.MarkerType.BluePin
-                            marker.selectedMarkerType = MapPOIItem.MarkerType.RedPin
-                            mapView.addPOIItem(marker)
-                            Log.d("MainActivity", "if문 확인" + getDistance(latA,lonA, LatitudeData[n],LongitudeData[n]) )
-                        }else{
-                            Log.d("MainActivity", "거리안에 없음"  )
+            Log.d("markerName", markerName)
+            fun makerCall(inname:String) {
+                databaseReference.child(inname).addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        if (dataSnapshot != null) {
+                            dataSnapshot.children.forEach { i ->
+                                Log.d("MainActivity", "Riiiii: " + i.child("이름").getValue())
+                                NameData.add("${i.child("이름").getValue()}")
+                                AddressData.add("${i.child("주소").getValue()}")
+                                LongitudeData.add("${i.child("좌표").child("경도").getValue()}".toDouble())
+                                LatitudeData.add("${i.child("좌표").child("위도").getValue()}".toDouble())
+                                Log.d("MainActivity", "Single Value: " + LongitudeData[h])
+
+                                if (getDistance(latA, lonA, LatitudeData[n], LongitudeData[n]) <= 1000)
+                                {
+                                    var marker1 = MapPOIItem()
+                                    marker1.mapPoint = MapPoint.mapPointWithGeoCoord(LatitudeData[n], LongitudeData[n])
+                                    marker1.itemName = NameData[n]
+                                    marker1.tag = n
+                                    marker1.markerType = MapPOIItem.MarkerType.BluePin
+                                    marker1.selectedMarkerType = MapPOIItem.MarkerType.RedPin
+                                    mapView.addPOIItem(marker1)
+                                    Log.d("MainActivity", "if문 확인" + getDistance(latA, lonA, LatitudeData[n], LongitudeData[n]))
+                                } else {
+                                    Log.d("MainActivity", "거리안에 없음")
+                                }
+                                n++
+                            }
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Datasnapshot is null", Toast.LENGTH_SHORT).show()
                         }
-                        n++
+
                     }
-                } else {
-                    Toast.makeText(getApplicationContext(), "Datasnapshot is null", Toast.LENGTH_SHORT).show()
-                }
 
+                    override fun onCancelled(error: DatabaseError) {
+                    }
+                })
             }
-
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-
-
-
-
-
-        })
-
+            makerCall("카페")
+            makerCall("숙소")
+            makerCall("상점")
+            makerCall("일반 충전소")
+            makerCall("음식점")
+            mapView.setCalloutBalloonAdapter(CustomBalloonAdapter(layoutInflater, marker1))
+        }
     }
-
     override fun onCalloutBalloonOfPOIItemTouched(p0: MapView?, p1: MapPOIItem?) {
 
     }
@@ -273,20 +303,23 @@ class MapActivity : AppCompatActivity(), MapView.POIItemEventListener {
         poiItem: MapPOIItem?,
         p2: MapPOIItem.CalloutBalloonButtonType?
     ) {
-        val builder = AlertDialog.Builder(this)
-        val itemList = arrayOf("확인", "취소")
-        builder.setTitle("인터넷에서 검색하시겠습니까?")
-        builder.setItems(itemList) { dialog, which ->
-            when(which) {
-                0 -> {
-                    val address = "https://search.daum.net/search?w=tot&DA=YZR&t__nil_searchbox=btn&sug=&sugo=&sq=&o=&q="+"${poiItem?.itemName}"
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(address))
-                    startActivity(intent)
-                }  // 토스트
-                1 -> dialog.dismiss()    // 마커 삭제
+        if(poiItem != gpsmarker) {
+            val builder = AlertDialog.Builder(this)
+            val itemList = arrayOf("확인", "취소")
+            builder.setTitle("인터넷에서 검색하시겠습니까?")
+            builder.setItems(itemList) { dialog, which ->
+                when (which) {
+                    0 -> {
+                        val address =
+                            "https://search.daum.net/search?w=tot&DA=YZR&t__nil_searchbox=btn&sug=&sugo=&sq=&o=&q=" + "${poiItem?.itemName}"
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(address))
+                        startActivity(intent)
+                    }  // 토스트
+                    1 -> dialog.dismiss()    // 마커 삭제
+                }
             }
+            builder.show()
         }
-        builder.show()
     }
 
     override fun onDraggablePOIItemMoved(p0: MapView?, p1: MapPOIItem?, p2: MapPoint?) {
@@ -301,4 +334,3 @@ class MapActivity : AppCompatActivity(), MapView.POIItemEventListener {
         return (Q *c).toInt()
     }
 }
-

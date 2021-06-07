@@ -1,9 +1,7 @@
 package com.example.ez_tour
 
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Base64
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
@@ -11,11 +9,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.kakao.sdk.auth.LoginClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.AuthErrorCause.*
 import com.kakao.sdk.user.UserApiClient
-import java.security.MessageDigest
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,8 +23,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         //파싱코드 배포시 제거
-       /* var file = InputStreamReader(getResources().openRawResource(R.raw.test1))
+       /* var file = InputStreamReader(getResources().openRawResource(R.raw.test))
         var fileReader: BufferedReader? = null
         var csvReader: CSVReader? = null
         val dataList = arrayListOf<Array<String>>()
@@ -70,10 +68,12 @@ class MainActivity : AppCompatActivity() {
             databaseReference.child("${Arrays.deepToString(arrayOf(data[0])).replace("[","").replace("]","")}")
                 .child("${Arrays.deepToString(arrayOf(data[1])).replace("[","").replace("]","")}")
                 .child("태그").setValue("${Arrays.deepToString(arrayOf(data[0])).replace("[","").replace("]","")}","태그")
-        }   */
-
+            databaseReference.child("${Arrays.deepToString(arrayOf(data[0])).replace("[","").replace("]","")}")
+                .child("${Arrays.deepToString(arrayOf(data[1])).replace("[","").replace("]","")}")
+                .child("이미지URL").setValue("${Arrays.deepToString(arrayOf(data[6])).replace("[","").replace("]","")}","이미지URL")
+        }*/
         //해쉬키 얻기
-        try {
+       /* try {
             val info =
                 packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNING_CERTIFICATES)
             val signatures = info.signingInfo.apkContentsSigners
@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
             }
         } catch (e: Exception) {
             Log.e("name not found", e.toString())
-        }
+        } */
 
         val btn_login = findViewById<Button>(R.id.btn_login) as ImageButton
 
@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     else -> { // Unknown
                         Toast.makeText(this, "기타 에러", Toast.LENGTH_SHORT).show()
-                        Log.d("error",error.toString())
+                        Log.d("LoginError",error.toString())
                     }
                 }
             }
@@ -136,21 +136,18 @@ class MainActivity : AppCompatActivity() {
                         databaseReference.child("사용자").child("${user.id}").child("카카오").child("ID").setValue("${user.id}","ID:")
                         databaseReference.child("사용자").child("${user.id}").child("카카오").child("닉네임").setValue("${user.kakaoAccount?.profile?.nickname}","닉네임")
                         databaseReference.child("사용자").child("${user.id}").child("카카오").child("프로필URL").setValue("${user.kakaoAccount?.profile?.thumbnailImageUrl}","프로필URL")
-                        //   "\n이메일: ${user.kakaoAccount?.email}" +
-                        //  "\n프로필사진: ${user.kakaoAccount?.profile?.thumbnailImageUrl}"
                     }
                 }
             }
         }
 
         btn_login.setOnClickListener {
-            LoginClient.instance.run {
-                if (isKakaoTalkLoginAvailable(this@MainActivity)) {
-                    LoginClient.instance.loginWithKakaoTalk(this@MainActivity, callback = callback)
+            if (UserApiClient.instance.isKakaoTalkLoginAvailable(this@MainActivity)) {
+                    UserApiClient.instance.loginWithKakaoTalk(this@MainActivity, callback = callback)
                 } else {
-                    LoginClient.instance.loginWithKakaoAccount(this@MainActivity, callback = callback)
+                    UserApiClient.instance.loginWithKakaoAccount(this@MainActivity, callback = callback)
                 }
-            }
+
         }
     }
 }

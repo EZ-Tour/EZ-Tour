@@ -18,12 +18,11 @@
         android:theme="@style/Theme.EZ_Tour"
         android:usesCleartextTraffic="true">
         <!-- Main -->
-        <activity android:name=".MainActivity"
-            android:windowSoftInputMode="adjustNothing">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+
             </intent-filter>
         </activity>
         <!-- 로그인 화면 kakao61c8188e57dfd2ad836236244c72f0e4-->
@@ -32,7 +31,7 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
+                <data android:scheme="geo" />
                 <!-- Redirect URI: "kakao{NATIVE_APP_KEY}://oauth“ -->
                 <data android:host="oauth"
                     android:scheme="kakao61c8188e57dfd2ad836236244c72f0e4" />
@@ -43,9 +42,8 @@
         <activity android:name=".MypageActivity" />
         <activity android:name=".SearchActivity"
             android:windowSoftInputMode="adjustNothing"/>
-        <activity android:name=".InformationActivity" />
+        <activity android:name=".InformationActivity"/>
         <activity android:name=".MapActivity" />
-
         <meta-data
             android:name="EZ_Tour"
             android:value="61c8188e57dfd2ad836236244c72f0e4" /> <!-- Map용 네이티브 앱키 확인 -->
@@ -53,5 +51,4 @@
             android:name="com.kakao.sdk.AppKey"
             android:value="61c8188e57dfd2ad836236244c72f0e4" />
     </application>
-
 </manifest>

@@ -1,6 +1,7 @@
 package com.example.ez_tour
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_search.*
+import java.net.URL
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -33,19 +35,67 @@ class SearchActivity : AppCompatActivity() ,TextWatcher {
         val editText = findViewById<EditText>(R.id.searcBar)
         val mRecyclerView = findViewById<RecyclerView>(R.id.review)
         var sResult = String()
-        databaseReference.child("카페").addValueEventListener(object : ValueEventListener {
+        fun calldata(category: String) {
+            databaseReference.child(category).addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if(dataSnapshot != null) {
+                        dataSnapshot.children.forEach { i ->
+                            Log.d("MainActivity", "Single ValueEventListener : " + i.getValue());
+                            var image_task: URLtoBitmapTask = URLtoBitmapTask()
+                            image_task = URLtoBitmapTask().apply {
+                                try {
+                                    if(i.child("이미지URL").getValue() != "NULL"){
+                                        url = URL("${i.child("이미지URL").getValue()}")
+                                    } else {
+                                        url = URL("https://artsmidnorthcoast.com/wp-content/uploads/2014/05/no-image-available-icon-6.png")
+                                    }
+                                }catch (e: Exception){
+                                    url = URL("https://artsmidnorthcoast.com/wp-content/uploads/2014/05/no-image-available-icon-6.png")
+                                }
+
+                            }
+                            var bitmap: Bitmap = image_task.execute().get()
+                            nameData.add("${i.child("이름").getValue()}")
+                            tagData.add("${i.child("태그").getValue()}")
+                            list.add(RecycleData(count,"${i.child("이름").getValue()}", "${i.child("태그").getValue()}",bitmap))
+                            count++
+                            Log.d("MainActivity", "Count:" + count)
+                        }
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Datasnapshot is null", Toast.LENGTH_SHORT).show()
+                    }
+                    Log.d("Listtest1", list.toString())
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+            mRecyclerView.adapter = adapter
+        }
+       /* databaseReference.child("카페").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if(dataSnapshot != null) {
                     dataSnapshot.children.forEach { i ->
                         Log.d("MainActivity", "Single ValueEventListener : " + i.getValue());
-                        //var image_task: URLtoBitmapTask = URLtoBitmapTask()
-                        //image_task = URLtoBitmapTask().apply {
-                           // url = URL("${i.child("이미지 URL").getValue()}")
-                       // }
-                        //var bitmap: Bitmap = image_task.execute().get()
+                        var image_task: URLtoBitmapTask = URLtoBitmapTask()
+                        image_task = URLtoBitmapTask().apply {
+                            try {
+                                if(i.child("이미지URL").getValue() != "NULL"){
+                                    url = URL("${i.child("이미지URL").getValue()}")
+                                } else {
+                                    url = URL("https://artsmidnorthcoast.com/wp-content/uploads/2014/05/no-image-available-icon-6.png")
+                                }
+                            }catch (e: Exception){
+                                url = URL("https://artsmidnorthcoast.com/wp-content/uploads/2014/05/no-image-available-icon-6.png")
+                            }
+
+                        }
+                        var bitmap: Bitmap = image_task.execute().get()
                         nameData.add("${i.child("이름").getValue()}")
                         tagData.add("${i.child("태그").getValue()}")
-                        list.add(RecycleData(count,"${i.child("이름").getValue()}", "${i.child("태그").getValue()}"))
+                        list.add(RecycleData(count,"${i.child("이름").getValue()}", "${i.child("태그").getValue()}",bitmap))
                         count++
                         Log.d("MainActivity", "Count:" + count)
                     }
@@ -59,24 +109,24 @@ class SearchActivity : AppCompatActivity() ,TextWatcher {
                 TODO("Not yet implemented")
             }
 
-        })
-
-        databaseReference.child("관광명소").addValueEventListener(object : ValueEventListener {
+        }) */
+        calldata("카페")
+        /*databaseReference.child("관광명소").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if(dataSnapshot != null) {
                     dataSnapshot.children.forEach { i ->
                         Log.d("MainActivity", "Single ValueEventListener : " + i.getValue());
                         //var image_task: URLtoBitmapTask = URLtoBitmapTask()
                         //image_task = URLtoBitmapTask().apply {
-                        // url = URL("${i.child("이미지 URL").getValue()}")
-                        // }
-                        //var bitmap: Bitmap = image_task.execute().get()
-                        list.add(RecycleData(count,i.child("이름").getValue() as String,
-                            i.child("태그").getValue() as String))
-                        count++
-                        Log.d("MainActivity", "Count:" + count);
-                    }
-                } else {
+                         //   url = URL("${i.child("이미지URL").getValue()}")
+                      //  }
+                        //    var bitmap: Bitmap = image_task.execute().get()
+                            list.add(RecycleData(count,i.child("이름").getValue() as String,
+                                i.child("태그").getValue() as String,null))
+                            count++
+                            Log.d("MainActivity", "Count:" + count);
+                        }
+                    } else {
                     Toast.makeText(getApplicationContext(), "Datasnapshot is null", Toast.LENGTH_SHORT).show()
                 }
                 Log.d("Listtest2", list.toString())
@@ -86,20 +136,29 @@ class SearchActivity : AppCompatActivity() ,TextWatcher {
                 TODO("Not yet implemented")
             }
 
-        })
+        })*/
 
-        databaseReference.child("숙소").addValueEventListener(object : ValueEventListener {
+       /* databaseReference.child("숙소").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if(dataSnapshot != null) {
                     dataSnapshot.children.forEach { i ->
                         Log.d("MainActivity", "Single ValueEventListener : " + i.getValue());
-                        //var image_task: URLtoBitmapTask = URLtoBitmapTask()
-                        //image_task = URLtoBitmapTask().apply {
-                        // url = URL("${i.child("이미지 URL").getValue()}")
-                        // }
-                        //var bitmap: Bitmap = image_task.execute().get()
+                        var image_task: URLtoBitmapTask = URLtoBitmapTask()
+                        image_task = URLtoBitmapTask().apply {
+                            try {
+                                if(i.child("이미지URL").getValue() != "NULL"){
+                                    url = URL("${i.child("이미지URL").getValue()}")
+                                } else {
+                                    url = URL("https://artsmidnorthcoast.com/wp-content/uploads/2014/05/no-image-available-icon-6.png")
+                                }
+                            }catch (e: Exception){
+                                url = URL("https://artsmidnorthcoast.com/wp-content/uploads/2014/05/no-image-available-icon-6.png")
+                            }
+
+                        }
+                        var bitmap: Bitmap = image_task.execute().get()
                         list.add(RecycleData(count,i.child("이름").getValue() as String,
-                            i.child("태그").getValue() as String))
+                            i.child("태그").getValue() as String,bitmap))
                         count++
                         Log.d("MainActivity", "Count:" + count);
                     }
@@ -112,20 +171,30 @@ class SearchActivity : AppCompatActivity() ,TextWatcher {
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
             }
-        })
+        })*/
+        calldata("숙소")
 
-        databaseReference.child("음식점").addValueEventListener(object : ValueEventListener {
+       /* databaseReference.child("음식점").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if(dataSnapshot != null) {
                     dataSnapshot.children.forEach { i ->
                         Log.d("MainActivity", "Single ValueEventListener : " + i.getValue());
-                        //var image_task: URLtoBitmapTask = URLtoBitmapTask()
-                        //image_task = URLtoBitmapTask().apply {
-                        // url = URL("${i.child("이미지 URL").getValue()}")
-                        // }
-                        //var bitmap: Bitmap = image_task.execute().get()
+                        var image_task: URLtoBitmapTask = URLtoBitmapTask()
+                        image_task = URLtoBitmapTask().apply {
+                            try {
+                                if(i.child("이미지URL").getValue() != "NULL"){
+                                    url = URL("${i.child("이미지URL").getValue()}")
+                                } else {
+                                    url = URL("https://artsmidnorthcoast.com/wp-content/uploads/2014/05/no-image-available-icon-6.png")
+                                }
+                            }catch (e: Exception){
+                                url = URL("https://artsmidnorthcoast.com/wp-content/uploads/2014/05/no-image-available-icon-6.png")
+                            }
+
+                        }
+                        var bitmap: Bitmap = image_task.execute().get()
                         list.add(RecycleData(count,i.child("이름").getValue() as String,
-                            i.child("태그").getValue() as String))
+                            i.child("태그").getValue() as String,bitmap))
                         count++
                         Log.d("MainActivity", "Count:" + count);
                     }
@@ -139,7 +208,10 @@ class SearchActivity : AppCompatActivity() ,TextWatcher {
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
             }
-        })
+        }) */
+        calldata("음식점")
+        calldata("상점")
+        calldata("일반 충전소")
 
         Log.d("Listtest2", list.toString())
         mRecyclerView.adapter = adapter
@@ -160,12 +232,173 @@ class SearchActivity : AppCompatActivity() ,TextWatcher {
                     } catch (e: Exception) {
                     }
                 }else if (sResult.equals("일반 충전소")) {
+                    databaseReference.child("일반 충전소").addValueEventListener(object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            if(dataSnapshot != null) {
+                                dataSnapshot.children.forEach { i ->
+                                    Log.d("MainActivity", "Single ValueEventListener : " + i.getValue());
+                                    var image_task: URLtoBitmapTask = URLtoBitmapTask()
+                                    image_task = URLtoBitmapTask().apply {
+                                        try {
+                                            if(i.child("이미지URL").getValue() != "NULL"){
+                                                url = URL("${i.child("이미지URL").getValue()}")
+                                            } else {
+                                                url = URL("https://artsmidnorthcoast.com/wp-content/uploads/2014/05/no-image-available-icon-6.png")
+                                            }
+                                        }catch (e: Exception){
+                                            url = URL("https://artsmidnorthcoast.com/wp-content/uploads/2014/05/no-image-available-icon-6.png")
+                                        }
 
+                                    }
+                                    var bitmap: Bitmap = image_task.execute().get()
+                                    nameData.add("${i.child("이름").getValue()}")
+                                    tagData.add("${i.child("태그").getValue()}")
+                                    slist.add(RecycleData(count,"${i.child("이름").getValue()}", "${i.child("태그").getValue()}",bitmap))
+                                    count++
+                                    Log.d("MainActivity", "Count:" + count)
+                                }
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Datasnapshot is null", Toast.LENGTH_SHORT).show()
+                            }
+                            Log.d("Listtest1", "${ Arrays.deepToString(arrayOf(list))}")
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            TODO("Not yet implemented")
+                        }
+
+                    })
+                    try {
+                        mRecyclerView.adapter = spadapter
+                        page = 1
+                    } catch (e: Exception) {
+                    }
                 }else if (sResult.equals("상점")){
+                    databaseReference.child("상점").addValueEventListener(object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            if(dataSnapshot != null) {
+                                dataSnapshot.children.forEach { i ->
+                                    Log.d("MainActivity", "Single ValueEventListener : " + i.getValue());
+                                    var image_task: URLtoBitmapTask = URLtoBitmapTask()
+                                    image_task = URLtoBitmapTask().apply {
+                                        try {
+                                            if(i.child("이미지URL").getValue() != "NULL"){
+                                                url = URL("${i.child("이미지URL").getValue()}")
+                                            } else {
+                                                url = URL("https://artsmidnorthcoast.com/wp-content/uploads/2014/05/no-image-available-icon-6.png")
+                                            }
+                                        }catch (e: Exception){
+                                            url = URL("https://artsmidnorthcoast.com/wp-content/uploads/2014/05/no-image-available-icon-6.png")
+                                        }
 
+                                    }
+                                    var bitmap: Bitmap = image_task.execute().get()
+                                    nameData.add("${i.child("이름").getValue()}")
+                                    tagData.add("${i.child("태그").getValue()}")
+                                    slist.add(RecycleData(count,"${i.child("이름").getValue()}", "${i.child("태그").getValue()}",bitmap))
+                                    count++
+                                    Log.d("MainActivity", "Count:" + count)
+                                }
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Datasnapshot is null", Toast.LENGTH_SHORT).show()
+                            }
+                            Log.d("Listtest1", "${ Arrays.deepToString(arrayOf(list))}")
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            TODO("Not yet implemented")
+                        }
+
+                    })
+                    try {
+                        mRecyclerView.adapter = spadapter
+                        page = 1
+                    } catch (e: Exception) {
+                    }
                 }else if (sResult.equals("음식점")){
+                    databaseReference.child("음식점").addValueEventListener(object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            if(dataSnapshot != null) {
+                                dataSnapshot.children.forEach { i ->
+                                    Log.d("MainActivity", "Single ValueEventListener : " + i.getValue());
+                                    var image_task: URLtoBitmapTask = URLtoBitmapTask()
+                                    image_task = URLtoBitmapTask().apply {
+                                        try {
+                                            if(i.child("이미지URL").getValue() != "NULL"){
+                                                url = URL("${i.child("이미지URL").getValue()}")
+                                            } else {
+                                                url = URL("https://artsmidnorthcoast.com/wp-content/uploads/2014/05/no-image-available-icon-6.png")
+                                            }
+                                        }catch (e: Exception){
+                                            url = URL("https://artsmidnorthcoast.com/wp-content/uploads/2014/05/no-image-available-icon-6.png")
+                                        }
 
+                                    }
+                                    var bitmap: Bitmap = image_task.execute().get()
+                                    nameData.add("${i.child("이름").getValue()}")
+                                    tagData.add("${i.child("태그").getValue()}")
+                                    slist.add(RecycleData(count,"${i.child("이름").getValue()}", "${i.child("태그").getValue()}",bitmap))
+                                    count++
+                                    Log.d("MainActivity", "Count:" + count)
+                                }
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Datasnapshot is null", Toast.LENGTH_SHORT).show()
+                            }
+                            Log.d("Listtest1", "${ Arrays.deepToString(arrayOf(list))}")
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            TODO("Not yet implemented")
+                        }
+
+                    })
+                    try {
+                        mRecyclerView.adapter = spadapter
+                        page = 1
+                    } catch (e: Exception) {
+                    }
                 }else if (sResult.equals("숙소")){
+                    databaseReference.child("숙소").addValueEventListener(object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            if(dataSnapshot != null) {
+                                dataSnapshot.children.forEach { i ->
+                                    Log.d("MainActivity", "Single ValueEventListener : " + i.getValue());
+                                    var image_task: URLtoBitmapTask = URLtoBitmapTask()
+                                    image_task = URLtoBitmapTask().apply {
+                                        try {
+                                            if(i.child("이미지URL").getValue() != "NULL"){
+                                                url = URL("${i.child("이미지URL").getValue()}")
+                                            } else {
+                                                url = URL("https://artsmidnorthcoast.com/wp-content/uploads/2014/05/no-image-available-icon-6.png")
+                                            }
+                                        }catch (e: Exception){
+                                            url = URL("https://artsmidnorthcoast.com/wp-content/uploads/2014/05/no-image-available-icon-6.png")
+                                        }
+
+                                    }
+                                    var bitmap: Bitmap = image_task.execute().get()
+                                    nameData.add("${i.child("이름").getValue()}")
+                                    tagData.add("${i.child("태그").getValue()}")
+                                    slist.add(RecycleData(count,"${i.child("이름").getValue()}", "${i.child("태그").getValue()}",bitmap))
+                                    count++
+                                    Log.d("MainActivity", "Count:" + count)
+                                }
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Datasnapshot is null", Toast.LENGTH_SHORT).show()
+                            }
+                            Log.d("Listtest1", "${ Arrays.deepToString(arrayOf(list))}")
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            TODO("Not yet implemented")
+                        }
+
+                    })
+                    try {
+                        mRecyclerView.adapter = spadapter
+                        page = 1
+                    } catch (e: Exception) {
+                    }
 
                 }else if (sResult.equals("카페")){
                     databaseReference.child("카페").addValueEventListener(object : ValueEventListener {
@@ -173,14 +406,23 @@ class SearchActivity : AppCompatActivity() ,TextWatcher {
                             if(dataSnapshot != null) {
                                 dataSnapshot.children.forEach { i ->
                                     Log.d("MainActivity", "Single ValueEventListener : " + i.getValue());
-                                    //var image_task: URLtoBitmapTask = URLtoBitmapTask()
-                                    //image_task = URLtoBitmapTask().apply {
-                                    // url = URL("${i.child("이미지 URL").getValue()}")
-                                    // }
-                                    //var bitmap: Bitmap = image_task.execute().get()
+                                    var image_task: URLtoBitmapTask = URLtoBitmapTask()
+                                    image_task = URLtoBitmapTask().apply {
+                                        try {
+                                            if(i.child("이미지URL").getValue() != "NULL"){
+                                                url = URL("${i.child("이미지URL").getValue()}")
+                                            } else {
+                                                url = URL("https://artsmidnorthcoast.com/wp-content/uploads/2014/05/no-image-available-icon-6.png")
+                                            }
+                                        }catch (e: Exception){
+                                            url = URL("https://artsmidnorthcoast.com/wp-content/uploads/2014/05/no-image-available-icon-6.png")
+                                        }
+
+                                    }
+                                    var bitmap: Bitmap = image_task.execute().get()
                                     nameData.add("${i.child("이름").getValue()}")
                                     tagData.add("${i.child("태그").getValue()}")
-                                    slist.add(RecycleData(count,"${i.child("이름").getValue()}", "${i.child("태그").getValue()}"))
+                                    slist.add(RecycleData(count,"${i.child("이름").getValue()}", "${i.child("태그").getValue()}",bitmap))
                                     count++
                                     Log.d("MainActivity", "Count:" + count)
                                 }
@@ -227,9 +469,7 @@ class SearchActivity : AppCompatActivity() ,TextWatcher {
 
     }
 
-    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-    }
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
         if(page == 0) {
@@ -239,8 +479,6 @@ class SearchActivity : AppCompatActivity() ,TextWatcher {
         }
     }
 
-    override fun afterTextChanged(s: Editable?) {
-
-    }
+    override fun afterTextChanged(s: Editable?) {}
 
 }

@@ -118,19 +118,6 @@
         app:layout_constraintTop_toBottomOf="@+id/view_inname" />
 
     <TextView
-        android:id="@+id/text_incall"
-        android:layout_width="320dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="75dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/map_image_0003_messagebutton_1"
-        android:gravity="center"
-        android:text="연락처 예시"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_inaddress" />
-
-    <TextView
         android:id="@+id/view_inname"
         android:layout_width="100dp"
         android:layout_height="50dp"
@@ -158,20 +145,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view_inname" />
 
-    <TextView
-        android:id="@+id/view_incall"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/map_image_0001_button_2"
-        android:gravity="center"
-        android:text="연락처"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view_inaddress" />
-
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
@@ -197,9 +170,10 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
+        android:backgroundTint="#00ff0000"
         app:layout_constraintBottom_toBottomOf="@+id/view_Inimage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/btn_star" />
+        app:srcCompat="@drawable/map_image_0004_heart_2" />
 
     <ImageButton
         android:id="@+id/btn_navi"
@@ -213,16 +187,52 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <ImageButton
+        android:id="@+id/btn_internet"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/map_image_0003_messagebutton_1"
+        android:backgroundTintMode="src_in"
+        android:text="경로 살펴보기"
+        app:layout_constraintBottom_toTopOf="@+id/btn_navi"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="경로 살펴보기"
+        android:text="카카오맵 앱에서 길을 찾아볼까요?"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/btn_navi"
         app:layout_constraintEnd_toEndOf="@+id/btn_navi"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/btn_navi" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="인터넷에서 자세히 알아볼까요?"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_internet"
+        app:layout_constraintEnd_toEndOf="@+id/btn_navi"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_internet" />
+
+    <ImageButton
+        android:id="@+id/btn_share"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="#00ff0000"
+        app:layout_constraintEnd_toEndOf="@+id/textView3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_share" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

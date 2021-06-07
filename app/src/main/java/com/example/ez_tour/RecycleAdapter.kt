@@ -31,6 +31,8 @@ class RecyclerAdapter(val items: MutableList<RecycleData>,val context: Context) 
             intent.putExtra("tag",filteredList.get(position).imageTag)
             ContextCompat.startActivity(holder.itemView.context,intent,null)
         }
+        val image = holder.itemView.findViewById<ImageView>(R.id.view_reimage)
+        image.setImageBitmap(filteredList.get(position).bitmap)
         val name = holder.itemView.findViewById<TextView>(R.id.text_rename)
         name.text = "${filteredList.get(position).strName}" + ""
         val tag = holder.itemView.findViewById<ImageView>(R.id.view_retag)
