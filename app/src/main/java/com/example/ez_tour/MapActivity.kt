@@ -182,8 +182,10 @@ class MapActivity : AppCompatActivity(), MapView.POIItemEventListener {
                         marker.mapPoint= MapPoint.mapPointWithGeoCoord(LatitudeData[n],LongitudeData[n])
                         marker.itemName= NameData[n]
                         marker.tag = n
-                        marker.markerType = MapPOIItem.MarkerType.BluePin
-                        marker.selectedMarkerType = MapPOIItem.MarkerType.RedPin
+                        marker.markerType = MapPOIItem.MarkerType.CustomImage
+                        marker.customImageResourceId = R.drawable.map_image_0008_point_3
+                        marker.isCustomImageAutoscale= false
+                        marker.setCustomImageAnchor(0.5f,1.0f)
                         mapView.addPOIItem(marker)
                         n++
                     }
@@ -243,7 +245,6 @@ class MapActivity : AppCompatActivity(), MapView.POIItemEventListener {
     }
 
     override fun onPOIItemSelected(mapView: MapView, mapPOIItem: MapPOIItem) {
-        if (mapPOIItem != gpsmarker) {
             val markerName: String = NameData[mapPOIItem.tag]
             var latA: Double = LatitudeData[mapPOIItem.tag]
             var lonA: Double = LongitudeData[mapPOIItem.tag]
@@ -267,8 +268,14 @@ class MapActivity : AppCompatActivity(), MapView.POIItemEventListener {
                                     marker1.mapPoint = MapPoint.mapPointWithGeoCoord(LatitudeData[n], LongitudeData[n])
                                     marker1.itemName = NameData[n]
                                     marker1.tag = n
-                                    marker1.markerType = MapPOIItem.MarkerType.BluePin
-                                    marker1.selectedMarkerType = MapPOIItem.MarkerType.RedPin
+                                    marker1.markerType = MapPOIItem.MarkerType.CustomImage
+                                    if(inname != "일반 충전소"){
+                                        marker1.customImageResourceId = R.drawable.map_image_0006_point_1
+                                    }else {
+                                        marker1.customImageResourceId = R.drawable.map_image_0007_point_2
+                                    }
+                                    marker1.isCustomImageAutoscale= false
+                                    marker1.setCustomImageAnchor(0.5f,1.0f)
                                     mapView.addPOIItem(marker1)
                                     Log.d("MainActivity", "if문 확인" + getDistance(latA, lonA, LatitudeData[n], LongitudeData[n]))
                                 } else {
@@ -292,7 +299,6 @@ class MapActivity : AppCompatActivity(), MapView.POIItemEventListener {
             makerCall("일반 충전소")
             makerCall("음식점")
             mapView.setCalloutBalloonAdapter(CustomBalloonAdapter(layoutInflater, marker1))
-        }
     }
     override fun onCalloutBalloonOfPOIItemTouched(p0: MapView?, p1: MapPOIItem?) {
 

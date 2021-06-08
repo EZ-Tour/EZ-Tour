@@ -18,11 +18,19 @@ class RecyclerAdapter(val items: MutableList<RecycleData>,val context: Context) 
     RecyclerView.Adapter<RecyclerAdapter.ViewHolder>(),Filterable{
 
     private var filteredList = mutableListOf<RecycleData>()
-
+    var mPosition = 0
     init {
         filteredList = items
     }
     override fun getItemCount() = filteredList.size
+
+    fun setPosition(position: Int){
+        mPosition = position
+    }
+    fun addItem(data: RecycleData){
+        items.add(data)
+        notifyDataSetChanged()
+    }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.itemView.setOnClickListener {
@@ -38,11 +46,13 @@ class RecyclerAdapter(val items: MutableList<RecycleData>,val context: Context) 
         val tag = holder.itemView.findViewById<ImageView>(R.id.view_retag)
         tag.setImageResource(
             when (filteredList.get(position).imageTag) {
-                "카페" -> R.drawable.kakao_login_large_narrow
-                "숙소" -> R.drawable.kakao_login_large_narrow
-                "관광명소" -> R.drawable.kakao_login_large_narrow
-                "음식점" -> R.drawable.kakao_login_large_narrow
-                else -> R.drawable.kakao_login_large_narrow
+                "일반 충전소"-> R.drawable.map_image_0005_tag_1
+                "숙소" -> R.drawable.map_image_0004_tag_2
+                "카페" -> R.drawable.map_image_0003_tag_3
+                "관광명소" -> R.drawable.map_image_0002_tag_4
+                "음식점" -> R.drawable.map_image_0001_tag_5
+                "상점" -> R.drawable.map_image_0000_tag_6
+                else -> R.drawable.map_image_0005_tag_1
             }
         )
     }

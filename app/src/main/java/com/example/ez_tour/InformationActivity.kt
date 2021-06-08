@@ -2,13 +2,11 @@ package com.example.ez_tour
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.DatabaseReference
@@ -18,6 +16,7 @@ import com.kakao.sdk.template.model.Content
 import com.kakao.sdk.template.model.FeedTemplate
 import com.kakao.sdk.template.model.Link
 import com.kakao.sdk.user.UserApiClient
+import java.net.URL
 
 class InformationActivity : AppCompatActivity() {
 
@@ -31,8 +30,7 @@ class InformationActivity : AppCompatActivity() {
         setContentView(R.layout.activity_information)
         tag = intent.getStringExtra("tag").replace("[","").replace("]","")
         name = intent.getStringExtra("name").replace("[","").replace("]","")
-       // data = intent.getSerializableExtra("item") as RecycleData
-       // val view_inimage = findViewById<ImageView>(R.id.view_Inimage)
+       val view_inimage = findViewById<ImageView>(R.id.view_Inimage)
         val text_inname = findViewById<TextView>(R.id.text_inname)
         val text_inaddress = findViewById<TextView>(R.id.text_inaddress)
         val btn_star = findViewById<ImageButton>(R.id.btn_star)
@@ -47,15 +45,30 @@ class InformationActivity : AppCompatActivity() {
         Log.d("Datatest","${tag}")
         Log.d("Datatest","${name}")
 
+
         text_inname.text = name
-        databaseReference.child(tag).child(name).child("주소").get().addOnSuccessListener {
-            text_inaddress.text = "${it.value}"
+        databaseReference.child(tag).child(name).get().addOnSuccessListener {
+            text_inaddress.text = "${it.child("주소").value}"
+            var image_task: URLtoBitmapTask = URLtoBitmapTask()
+            image_task = URLtoBitmapTask().apply {
+                try {
+                    if(it.child("이미지URL").getValue() != "NULL"){
+                        url = URL("${it.child("이미지URL").getValue()}")
+                    } else {
+                        url = URL("https://artsmidnorthcoast.com/wp-content/uploads/2014/05/no-image-available-icon-6.png")
+                    }
+                }catch (e: Exception){
+                    url = URL("https://artsmidnorthcoast.com/wp-content/uploads/2014/05/no-image-available-icon-6.png")
+                }
+
+            }
+            var bitmap: Bitmap = image_task.execute().get()
+            view_inimage.setImageBitmap(bitmap)
         }.addOnFailureListener {
             Log.d("Failtest","실패")
         }
 
         Log.d("Datatest","${databaseReference.child(tag).child(name).child("주소").get()}")
-                   // .get().toString()}"
        UserApiClient.instance.me { user, error ->
             databaseReference.child("사용자").child("${user!!.id}").child("즐겨찾기")
                     .child(name).child("이름").get().addOnSuccessListener {
@@ -69,6 +82,7 @@ class InformationActivity : AppCompatActivity() {
                    }
                 }
         }
+
         btn_star.setOnClickListener {
             UserApiClient.instance.me { user, error ->
                 if (star == 1) {

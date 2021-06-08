@@ -62,14 +62,23 @@ class MypageActivity : AppCompatActivity() {
                         if(dataSnapshot != null) {
                             dataSnapshot.children.forEach { i ->
                                 Log.d("MainActivity", "Single ValueEventListener : " + i.getValue());
-                                //var image_task: URLtoBitmapTask = URLtoBitmapTask()
-                                //image_task = URLtoBitmapTask().apply {
-                                // url = URL("${i.child("이미지 URL").getValue()}")
-                                // }
-                                //var bitmap: Bitmap = image_task.execute().get()
+                                var image_task: URLtoBitmapTask = URLtoBitmapTask()
+                                image_task = URLtoBitmapTask().apply {
+                                    try {
+                                        if(i.child("이미지URL").getValue() != "NULL"){
+                                            url = URL("${i.child("이미지URL").getValue()}")
+                                        } else {
+                                            url = URL("https://artsmidnorthcoast.com/wp-content/uploads/2014/05/no-image-available-icon-6.png")
+                                        }
+                                    }catch (e: Exception){
+                                        url = URL("https://artsmidnorthcoast.com/wp-content/uploads/2014/05/no-image-available-icon-6.png")
+                                    }
+
+                                }
+                                var bitmap: Bitmap = image_task.execute().get()
                                 nameData.add("${i.child("이름").getValue()}")
                                 tagData.add("${i.child("태그").getValue()}")
-                                slist.add(StarData(count,"${i.child("이름").getValue()}", "${i.child("태그").getValue()}"))
+                                slist.add(StarData(count,"${i.child("이름").getValue()}", "${i.child("태그").getValue()}",bitmap))
                                 count++
                                 Log.d("MainActivity", "Count:" + count)
                             }
