@@ -100,26 +100,23 @@
         app:layout_constraintStart_toStartOf="parent"
         android:windowSoftInputMode="adjustNothing"/>
 
-    <ImageButton
-        android:id="@+id/btn_help3"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/map_image_help"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        android:windowSoftInputMode="adjustNothing"/>
-
-    <EditText
-        android:id="@+id/searcBar"
+    <ImageView
+        android:id="@+id/imageView3"
         android:layout_width="230dp"
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/map_image_0000_searchbox"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <EditText
+        android:id="@+id/searcBar"
+        android:layout_width="180dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="20dp"
         android:ems="10"
-        android:gravity="center"
         android:inputType="textPersonName"
         android:windowSoftInputMode="adjustNothing"
         app:layout_constraintStart_toStartOf="parent"

@@ -25,6 +25,7 @@ class InformationActivity : AppCompatActivity() {
     private val databaseReference: DatabaseReference = firebaseDatabase.getReference()
     var tag: String = ""
     var name: String = ""
+    var image: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_information)
@@ -54,8 +55,10 @@ class InformationActivity : AppCompatActivity() {
                 try {
                     if(it.child("이미지URL").getValue() != "NULL"){
                         url = URL("${it.child("이미지URL").getValue()}")
+                        image = "${it.child("이미지URL").getValue()}"
                     } else {
                         url = URL("https://artsmidnorthcoast.com/wp-content/uploads/2014/05/no-image-available-icon-6.png")
+                        image = "https://artsmidnorthcoast.com/wp-content/uploads/2014/05/no-image-available-icon-6.png"
                     }
                 }catch (e: Exception){
                     url = URL("https://artsmidnorthcoast.com/wp-content/uploads/2014/05/no-image-available-icon-6.png")
@@ -99,6 +102,8 @@ class InformationActivity : AppCompatActivity() {
                         .child(name).child("이름").setValue(name)
                     databaseReference.child("사용자").child("${user!!.id}").child("즐겨찾기")
                         .child(name).child("태그").setValue(tag)
+                    databaseReference.child("사용자").child("${user!!.id}").child("즐겨찾기")
+                        .child(name).child("이미지URL").setValue(image)
 
                     Toast.makeText(this, "즐겨찾기에 추가하였습니다.", Toast.LENGTH_SHORT).show()
                 }
@@ -126,39 +131,48 @@ class InformationActivity : AppCompatActivity() {
         }
 
         btn_navi.setOnClickListener {
-            try {
-                val intent =
-                    Intent(Intent.ACTION_VIEW, Uri.parse("kakaomap://search?q=${name}")).apply {
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    }
-                if (intent.resolveActivity(packageManager) != null) {
-                    startActivity(intent)
-                }
-            } catch (e: NullPointerException) {
-                Log.e("LOCATION_ERROR", e.toString())
-                val builder = AlertDialog.Builder(this)
-                val itemList = arrayOf("확인", "취소")
-                builder.setTitle("카카오맵 설치 페이지로 넘어가시겠습니까?")
-                builder.setItems(itemList) { dialog, which ->
-                    when(which) {
-                        0 -> {
-                            val intent = Intent(
-                                Intent.ACTION_VIEW,
-                                Uri.parse("\"https://play.google.com/store/apps/details?id=카카오맵")
-                            ).apply {
-                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            }
+            val builder = AlertDialog.Builder(this)
+            val itemList = arrayOf("확인", "취소")
+            builder.setTitle("카카오맵에서 검색하시겠습니까?")
+            builder.setItems(itemList) { dialog, which ->
+                when(which) {
+                    0 -> {
+                        try {
+                            val intent =
+                                Intent(Intent.ACTION_VIEW, Uri.parse("kakaomap://search?q=${name}")).apply {
+                                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                }
                             if (intent.resolveActivity(packageManager) != null) {
                                 startActivity(intent)
                             }
-                        }  // 토스트
-                        1 -> dialog.dismiss()
-                    }
+                        } catch (e: NullPointerException) {
+                            Log.e("LOCATION_ERROR", e.toString())
+                            val builder = AlertDialog.Builder(this)
+                            val itemList = arrayOf("확인", "취소")
+                            builder.setTitle("카카오맵 설치 페이지로 넘어가시겠습니까?")
+                            builder.setItems(itemList) { dialog, which ->
+                                when(which) {
+                                    0 -> {
+                                        val intent = Intent(
+                                            Intent.ACTION_VIEW,
+                                            Uri.parse("\"https://play.google.com/store/apps/details?id=카카오맵")
+                                        ).apply {
+                                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                        }
+                                        if (intent.resolveActivity(packageManager) != null) {
+                                            startActivity(intent)
+                                        }
+                                    }  // 토스트
+                                    1 -> dialog.dismiss()
+                                }
+                            }
+                            builder.show()
+                        }
+                    }  // 토스트
+                    1 -> dialog.dismiss()
                 }
-                builder.show()
-
-
             }
+            builder.show()
         }
 
         btn_share.setOnClickListener {
@@ -190,7 +204,7 @@ class InformationActivity : AppCompatActivity() {
             content = Content(
                 title = "${name}",
                 description = "#충전소, #${tag}",
-                imageUrl = "http://mud-kage.kakao.co.kr/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png",
+                imageUrl = image,
                 link = Link(
                     webUrl = "https://developers.kakao.com",
                     mobileWebUrl = "https://developers.kakao.com"

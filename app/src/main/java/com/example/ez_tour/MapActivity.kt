@@ -119,11 +119,9 @@ class MapActivity : AppCompatActivity(), MapView.POIItemEventListener {
         btn_help.setOnClickListener {
             if (counter == 0) {
                 counter++
-                btn_help.setImageResource(R.drawable.kakao_login_large_narrow)
                 img_hlep.visibility = View.VISIBLE
             } else {
                 counter--
-                btn_help.setImageResource(R.drawable.common_google_signin_btn_icon_dark)
                 img_hlep.visibility = View.INVISIBLE
             }
         }

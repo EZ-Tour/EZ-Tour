@@ -12,19 +12,19 @@
         android:id="@+id/btn_login"
         android:layout_width="350dp"
         android:layout_height="70dp"
-        android:layout_marginBottom="120dp"
-        android:background="@drawable/main_kakaologin"
+        android:layout_marginBottom="180dp"
+        android:background="@drawable/kakao_login_large_narrow"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="280dp"
+        android:layout_height="250dp"
         android:layout_marginTop="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/main_title" />
+        app:srcCompat="@drawable/map_image_0000_logo" />
 </androidx.constraintlayout.widget.ConstraintLayout>

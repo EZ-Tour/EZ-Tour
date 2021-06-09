@@ -32,16 +32,20 @@ class StarAdapter(val items: MutableList<StarData>,val context: Context) :
             intent.putExtra("tag",List.get(position).imageTag)
             ContextCompat.startActivity(holder.itemView.context,intent,null)
         }
+        val image = holder.itemView.findViewById<ImageView>(R.id.view_reimage)
+        image.setImageBitmap(List.get(position).bitmap)
         val name = holder.itemView.findViewById<TextView>(R.id.text_rename)
         name.text = "${List.get(position).strName}"
         val tag = holder.itemView.findViewById<ImageView>(R.id.view_retag)
         tag.setImageResource(
             when (List.get(position).imageTag) {
-                "카페" -> R.drawable.kakao_login_large_narrow
-                "숙소" -> R.drawable.kakao_login_large_narrow
-                "관광명소" -> R.drawable.kakao_login_large_narrow
-                "음식점" -> R.drawable.kakao_login_large_narrow
-                else -> R.drawable.kakao_login_large_narrow
+                "일반 충전소"-> R.drawable.map_image_0005_tag_1
+                "숙소" -> R.drawable.map_image_0004_tag_2
+                "카페" -> R.drawable.map_image_0003_tag_3
+                "관광명소" -> R.drawable.map_image_0002_tag_4
+                "음식점" -> R.drawable.map_image_0001_tag_5
+                "상점" -> R.drawable.map_image_0000_tag_6
+                else -> R.drawable.map_image_0005_tag_1
             }
         )
     }

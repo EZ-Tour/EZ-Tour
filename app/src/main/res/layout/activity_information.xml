@@ -56,7 +56,8 @@
             app:icon="@drawable/map_image_0013_menubutton_6"
             app:iconGravity="top"
             app:iconPadding="20dp"
-            app:iconSize="50dp" />
+            app:iconSize="50dp"
+            app:iconTint="#673AB7" />
     </LinearLayout>
 
     <TextView
@@ -81,15 +82,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3"
         tools:srcCompat="@tools:sample/avatars" />
-
-    <ImageButton
-        android:id="@+id/btn_help2"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="76dp"
-        android:background="@drawable/map_image_help"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/text_inname"
