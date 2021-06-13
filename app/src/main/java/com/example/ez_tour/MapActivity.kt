@@ -43,10 +43,12 @@ class MapActivity : AppCompatActivity(), MapView.POIItemEventListener {
     var uLongitude:Double = 0.0
     private val Q = 6372.8 * 1000
     var n:Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
-
+        val text_title = findViewById<TextView>(R.id.textView)
+        text_title.setText("오늘은 어느 관광지가 좋을까요?")
         //kakao map 띄우기
         val mapView = MapView(this)
         val map_view = findViewById<View>(R.id.map_View) as RelativeLayout
@@ -225,28 +227,12 @@ class MapActivity : AppCompatActivity(), MapView.POIItemEventListener {
         }
     }
 
-    class CustomBalloonAdapter2(inflater: LayoutInflater,poiItem: MapPOIItem): CalloutBalloonAdapter {
-        val mCalloutBalloon: View = inflater.inflate(R.layout.customballoon, null)
-        val name: TextView = mCalloutBalloon.findViewById(R.id.text_name)
-        val address: TextView = mCalloutBalloon.findViewById(R.id.text_address)
-        override fun getCalloutBalloon(poiItem: MapPOIItem): View {
-                name.text = poiItem.itemName
-                var number: Int = poiItem.tag
-                address.text = AddressData[number]
-            return mCalloutBalloon
-        }
-
-        override fun getPressedCalloutBalloon(poiItem: MapPOIItem?): View {
-            // 말풍선 클릭 시
-            return mCalloutBalloon
-        }
-    }
-
     override fun onPOIItemSelected(mapView: MapView, mapPOIItem: MapPOIItem) {
             val markerName: String = NameData[mapPOIItem.tag]
             var latA: Double = LatitudeData[mapPOIItem.tag]
             var lonA: Double = LongitudeData[mapPOIItem.tag]
-
+            val text_title = findViewById<TextView>(R.id.textView)
+            text_title.setText("그곳이 좋겠어요!")
             Log.d("markerName", markerName)
             fun makerCall(inname:String) {
                 databaseReference.child(inname).addValueEventListener(object : ValueEventListener {
@@ -259,7 +245,7 @@ class MapActivity : AppCompatActivity(), MapView.POIItemEventListener {
                                 LongitudeData.add("${i.child("좌표").child("경도").getValue()}".toDouble())
                                 LatitudeData.add("${i.child("좌표").child("위도").getValue()}".toDouble())
                                 Log.d("MainActivity", "Single Value: " + LongitudeData[h])
-
+                                Log.d("MainActivity", "Single Value: " +"${i.child("이름").getValue()}")
                                 if (getDistance(latA, lonA, LatitudeData[n], LongitudeData[n]) <= 1000)
                                 {
                                     var marker1 = MapPOIItem()

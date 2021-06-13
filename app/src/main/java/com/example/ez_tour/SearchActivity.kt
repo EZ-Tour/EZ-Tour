@@ -36,6 +36,8 @@ class SearchActivity : AppCompatActivity() ,TextWatcher {
         val editText = findViewById<EditText>(R.id.searcBar)
         val mRecyclerView = findViewById<RecyclerView>(R.id.review)
         var sResult = String()
+        val text_title = findViewById<TextView>(R.id.textView)
+        text_title.setText("검색창에 키워드를 입력해보세요!")
         mRecyclerView.adapter = radapter
         fun calldata(category: String) {
             databaseReference.child(category).addValueEventListener(object : ValueEventListener {

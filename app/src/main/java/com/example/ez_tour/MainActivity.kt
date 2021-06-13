@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
             databaseReference.child("${Arrays.deepToString(arrayOf(data[0])).replace("[","").replace("]","")}")
                 .child("${Arrays.deepToString(arrayOf(data[1])).replace("[","").replace("]","")}")
                 .child("이미지URL").setValue("${Arrays.deepToString(arrayOf(data[6])).replace("[","").replace("]","")}","이미지URL")
-        }*/
+        } */
         //해쉬키 얻기
        /* try {
             val info =
